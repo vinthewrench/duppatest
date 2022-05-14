@@ -62,7 +62,7 @@ int main(int argc, const char * argv[]) {
 			uint8_t status1;
 
 			if(!duppa.updateStatus(status)
-				||duppa1.updateStatus(status1) ){
+				||! duppa1.updateStatus(status1) ){
 				printf("readStatus failed\n");
 				quit = true;
 				continue;
