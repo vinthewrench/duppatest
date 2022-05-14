@@ -112,6 +112,7 @@ bool DuppaEncoder::readStatus(uint8_t * regOut) {
 	
 	if(_i2cPort.isAvailable()){
 		uint8_t status = 0;
+		
 		if(_i2cPort.readByte(REG_ESTATUS, status)){
 			
 			_lastStatus = status;

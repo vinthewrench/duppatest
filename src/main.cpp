@@ -43,13 +43,12 @@ int main(int argc, const char * argv[]) {
 		if(!duppa.begin(0x40, config, errnum))
 			throw Exception("failed to setup Duppa ", errnum);
 		
-	//	duppa.reset();
+	duppa.reset();
 	
 	 		uint8_t status;
 
 		
 		printf("reading status\n");
-		duppa.readStatus();
 		
 		while(!quit){
 	 
@@ -73,9 +72,6 @@ int main(int argc, const char * argv[]) {
 				if(duppa.wasMoved(cw)) {
 					printf("Moved %s ", cw? "CW": "CCW");
 				}
-				
-	
-		 
 			}
 			
 			usleep(2000);
