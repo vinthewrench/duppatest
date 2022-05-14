@@ -32,9 +32,11 @@ bool DuppaLEDRing::begin(uint8_t deviceAddress,  int &error){
 	uint8_t idcode = 0;
 
 	if( _i2cPort.begin(deviceAddress, error)
-		&& _i2cPort.readByte(REG_IDCODE, idcode) && idcode == deviceAddress		 
+		&& _i2cPort.readByte(REG_IDCODE, idcode)//  && idcode == deviceAddress
  		) {
 	 
+		
+		printf("ID Code %02 = %02 \n",deviceAddress, idcode );
 		_isSetup = true;
 	}
  
