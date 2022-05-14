@@ -61,16 +61,16 @@ int main(int argc, const char * argv[]) {
 			if(status != 0){
 				bool cw = false;
 				
-				printf("Status %02x\n", status);
+				printf("\nStatus %02x - ", status);
 		 
 				if(duppa.wasPressed())
-					printf("Pressed\n");
+					printf("Pressed ");
 	
 				if(duppa.wasClicked())
-					printf("Clicked\n");
+					printf("Clicked ");
 		
 				if(duppa.wasMoved(cw)) {
-					printf("Moved %s", cw? "CW": "CCW");
+					printf("Moved %s ", cw? "CW": "CCW");
 				}
 				
 	
