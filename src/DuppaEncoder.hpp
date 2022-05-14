@@ -63,7 +63,7 @@ public:
 
 	
 	// resets on read.
-	bool readStatus(uint8_t* = nullptr);
+	bool updateStatus(uint8_t* = nullptr);
 	
 	bool wasClicked();	// pressed and let go
 	bool wasPressed();	// still down

@@ -43,7 +43,7 @@ int main(int argc, const char * argv[]) {
 		if(!duppa.begin(0x40, config, errnum))
 			throw Exception("failed to setup Duppa ", errnum);
 		
-	duppa.reset();
+	//duppa.reset();
 	
 	 		uint8_t status;
 
@@ -52,7 +52,7 @@ int main(int argc, const char * argv[]) {
 		
 		while(!quit){
 	 
-			if(!duppa.readStatus(&status)){
+			if(!duppa.updateStatus(&status)){
 				printf("readStatus failed\n");
 				quit = true;
 				continue;
