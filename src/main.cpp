@@ -82,9 +82,8 @@ int main(int argc, const char * argv[]) {
 					val +=  (cw? 8:-8);
 					if(val < 0) val = 0;
 					else if (val > 255) val = 255;
-					green = val;
-			 
-					duppa.setColor(red, green, blue);
+				 
+					duppa.setColor(val, val, val);
 
 				}
 				
