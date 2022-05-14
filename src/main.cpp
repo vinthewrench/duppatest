@@ -73,12 +73,17 @@ int main(int argc, const char * argv[]) {
 					
 					printf("Moved %s ", cw? "CW": "CCW");
 					
-					static uint8_t red = 0;
-					static uint8_t green = 128;
-					static uint8_t blue = 0;
+					uint8_t red = 0;
+						uint8_t green = 0;
+						uint8_t blue = 0;
 					
-					green +=  (cw? 8:-8);
+					int val = 0;
 					
+					val +=  (cw? 8:-8);
+					if(val < 0) val = 0;
+					else if (val > 255) val = 255;
+					green = val;
+			 
 					duppa.setColor(red, green, blue);
 
 				}
