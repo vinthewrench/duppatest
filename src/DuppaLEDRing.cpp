@@ -9,8 +9,43 @@
 
 
 enum I2C_Register {
- 	REG_IDCODE = 0xFC,
+ 	COMMANDREGISTER 		= 0xFD,
+	COMMANDREGISTER_LOCK = 0xFE,
+	ID_REGISTER 			= 0xFC,
+	ULOCK_CODE 				= 0xC5,
+	CONFIGURATION 			= 0x50,
+	GLOBALCURRENT 			= 0x51,
+	PULLUPDOWM 				= 0x52,
+	OPENSHORT 				= 0x53,
+	TEMPERATURE 			= 0x5F,
+	SPREADSPECTRUM			 = 0x60,
+	RESET_REG 				= 0x8F,
+	PWM_FREQUENCY_ENABLE = 0xE0,
+	PWM_FREQUENCY_SET 	= 0xE2,
+	
+	PAGE0 					= 0x00,
+	PAGE1 					= 0x01
  } ;
+
+
+#define ISSI3746_PAGE0 0x00
+#define ISSI3746_PAGE1 0x01
+
+
+#define ISSI3746_COMMANDREGISTER 0xFD
+#define ISSI3746_COMMANDREGISTER_LOCK 0xFE
+#define ISSI3746_ID_REGISTER 0xFC
+#define ISSI3746_ULOCK_CODE 0xC5
+
+#define ISSI3746_CONFIGURATION 0x50
+#define ISSI3746_GLOBALCURRENT 0x51
+#define ISSI3746_PULLUPDOWM 0x52
+#define ISSI3746_OPENSHORT 0x53
+#define ISSI3746_TEMPERATURE 0x5F
+#define ISSI3746_SPREADSPECTRUM 0x60
+#define ISSI3746_RESET_REG 0x8F
+#define ISSI3746_PWM_FREQUENCY_ENABLE 0xE0
+#define ISSI3746_PWM_FREQUENCY_SET 0xE2
 
 DuppaLEDRing::DuppaLEDRing(){
 	_isSetup = false;
@@ -27,17 +62,11 @@ bool DuppaLEDRing::begin(uint8_t deviceAddress){
 }
 
 bool DuppaLEDRing::begin(uint8_t deviceAddress,  int &error){
-	
-	
-	uint8_t idcode = 0;
-
+ 
 	if( _i2cPort.begin(deviceAddress, error)
-		&& _i2cPort.readByte(REG_IDCODE, idcode)//  && idcode == deviceAddress
- 		) {
+	  		) {
 	 
-		
-		printf("ID Code %02x = %02x \n",deviceAddress, idcode );
-		_isSetup = true;
+	 		_isSetup = true;
 	}
  
  
@@ -54,3 +83,62 @@ void DuppaLEDRing::stop(){
 uint8_t	DuppaLEDRing::getDevAddr(){
 	return _i2cPort.getDevAddr();
 };
+
+
+// Reset the board
+bool DuppaLEDRing::reset(void) {
+	bool success = false;
+	
+	if(_i2cPort.isAvailable()){
+		
+		success =	selectBank(PAGE1)
+		&&  _i2cPort.writeByte(RESET_REG,0xAE);
+	}
+	return success;
+	
+}
+
+ 
+bool DuppaLEDRing::clearAll(void) {
+	bool success = false;
+	
+	if(_i2cPort.isAvailable()
+		&& PWM_MODE()) {
+		
+		for (int i = 1; i < 73; i++) {
+			success = _i2cPort.writeByte(i, 0);
+			if(!success) break;
+		}
+	}
+	return success;
+	
+}
+
+bool DuppaLEDRing::PWM_MODE(void) {
+	bool success = false;
+	
+	if(_i2cPort.isAvailable()){
+		
+		success =	selectBank(PAGE0);
+	}
+	return success;
+	
+}
+ 
+
+bool  DuppaLEDRing::selectBank(uint8_t b){
+	bool success = false;
+	
+	if(_i2cPort.isAvailable()){
+ 
+		success =	_i2cPort.writeByte(COMMANDREGISTER_LOCK, ULOCK_CODE)
+					&&  _i2cPort.writeByte(COMMANDREGISTER,	b);
+ 	}
+	
+	return success;
+}
+
+
+ 
+
+

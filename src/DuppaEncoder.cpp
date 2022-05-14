@@ -44,7 +44,7 @@ enum I2C_Register {
 	REG_DPPERIOD = 0x1F,
 	REG_FADERGB = 0x20,
 	REG_FADEGP = 0x21,
-	  REG_GAMRLED = 0x27,
+	REG_GAMRLED = 0x27,
 	REG_GAMGLED = 0x28,
 	REG_GAMBLED = 0x29,
 	REG_GAMMAGP1 = 0x2A,
@@ -74,23 +74,23 @@ bool DuppaEncoder::begin(uint8_t deviceAddress, uint16_t conf){
 
 bool DuppaEncoder::begin(uint8_t deviceAddress, uint16_t conf,  int &error){
 	
- 	uint8_t idcode = 0;
+	uint8_t idcode = 0;
 	
 	if( _i2cPort.begin(deviceAddress, error)
 		&& _i2cPort.readByte(REG_IDCODE, idcode) && idcode == 0x53		// check if it's a IC2Encoder
 		&& _i2cPort.writeByte(REG_GCONF,  (uint8_t)( conf & 0xFF))
 		&& _i2cPort.writeByte(REG_GCONF2,   (uint8_t)((conf >> 8) & 0xFF))
 		) {
- 		_gconf = conf;
+		_gconf = conf;
 		if ((conf & CLK_STRECH_ENABLE) == 0)
 			_clockstrech = 0;
 		else
 			_clockstrech = 1;
-	 
+		
 		_isSetup = true;
 	}
- 
- 
+	
+	
 	return _isSetup;
 }
 
@@ -107,16 +107,25 @@ uint8_t	DuppaEncoder::getDevAddr(){
 
 
 // Reset the board
-void DuppaEncoder::reset(void) {
-	_i2cPort.writeByte(REG_GCONF,  (uint8_t) 0x80);
-	usleep(400);
+bool DuppaEncoder::reset(void) {
+	bool success = false;
+	
+	if(_i2cPort.isAvailable()){
+		
+		if(_i2cPort.writeByte(REG_GCONF,  (uint8_t) 0x80)){
+			usleep(400);
+			
+			success = true;
+		}
+	}
+	return success;
 }
 
 bool DuppaEncoder::updateStatus(){
 	uint8_t status;
 	return updateStatus(status);
 }
- 
+
 
 bool DuppaEncoder::updateStatus(uint8_t &statusOut) {
 	bool success = false;
@@ -129,7 +138,7 @@ bool DuppaEncoder::updateStatus(uint8_t &statusOut) {
 			_lastStatus = status;
 			statusOut = status;
 			
- 			success = true;
+			success = true;
 		}
 	}
 	return success;
@@ -144,22 +153,22 @@ bool DuppaEncoder::wasPressed() {
 }
 
 bool DuppaEncoder::wasMoved(bool &movedRight) {
- 
+	
 	if( (_lastStatus & (RINC | RDEC)) != 0){
 		movedRight = (_lastStatus &  RINC) != 0;
 		return true;
 	}
-		
-		return false;
+	
+	return false;
 }
 
- 
+
 bool DuppaEncoder::setColor(uint8_t red, uint8_t green, uint8_t blue){
 	
 	bool success = false;
 	
 	if(_i2cPort.isAvailable()){
- 
+		
 		I2C::i2c_block_t block = {red, green, blue};
 		
 		success = _i2cPort.writeBlock(REG_RLED, 3, block);

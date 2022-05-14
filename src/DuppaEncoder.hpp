@@ -59,7 +59,7 @@ public:
 	bool begin(uint8_t deviceAddress, uint16_t conf, int &error);
 	void stop();
 
-	void reset();
+	bool reset();
  
 	// resets on read.
 	bool updateStatus();
