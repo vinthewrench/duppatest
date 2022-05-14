@@ -49,6 +49,7 @@ int main(int argc, const char * argv[]) {
 
 		
 		printf("reading status\n");
+		duppa.readStatus();
 		
 		while(!quit){
 	 
