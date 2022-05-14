@@ -6,6 +6,56 @@
 //
 
 #include "DuppaEncoder.hpp"
+#include <unistd.h>
+
+/*Encoder register definition*/
+enum I2C_Register {
+	REG_GCONF = 0x00,
+	REG_GP1CONF = 0x01,
+	REG_GP2CONF = 0x02,
+	REG_GP3CONF = 0x03,
+	REG_INTCONF = 0x04,
+	REG_ESTATUS = 0x05,
+	REG_I2STATUS = 0x06,
+	REG_FSTATUS = 0x07,
+	REG_CVALB4 = 0x08,
+	REG_CVALB3 = 0x09,
+	REG_CVALB2 = 0x0A,
+	REG_CVALB1 = 0x0B,
+	REG_CMAXB4 = 0x0C,
+	REG_CMAXB3 = 0x0D,
+	REG_CMAXB2 = 0x0E,
+	REG_CMAXB1 = 0x0F,
+	REG_CMINB4 = 0x10,
+	REG_CMINB3 = 0x11,
+	REG_CMINB2 = 0x12,
+	REG_CMINB1 = 0x13,
+	REG_ISTEPB4 = 0x14,
+	REG_ISTEPB3 = 0x15,
+	REG_ISTEPB2 = 0x16,
+	REG_ISTEPB1 = 0x17,
+	REG_RLED = 0x18,
+	REG_GLED = 0x19,
+	REG_BLED = 0x1A,
+	REG_GP1REG = 0x1B,
+	REG_GP2REG = 0x1C,
+	REG_GP3REG = 0x1D,
+	REG_ANTBOUNC = 0x1E,
+	REG_DPPERIOD = 0x1F,
+	REG_FADERGB = 0x20,
+	REG_FADEGP = 0x21,
+	  REG_GAMRLED = 0x27,
+	REG_GAMGLED = 0x28,
+	REG_GAMBLED = 0x29,
+	REG_GAMMAGP1 = 0x2A,
+	REG_GAMMAGP2 = 0x2B,
+	REG_GAMMAGP3 = 0x2C,
+	REG_GCONF2 = 0x30,
+	REG_IDCODE = 0x70,
+	REG_VERSION = 0x71,
+	REG_EEPROMS = 0x80,
+} I2C1_REGISTER;
+
 
 
 DuppaEncoder::DuppaEncoder(){
@@ -16,22 +66,28 @@ DuppaEncoder::~DuppaEncoder(){
 	stop();
 }
 
-bool DuppaEncoder::begin(uint8_t deviceAddress){
+bool DuppaEncoder::begin(uint8_t deviceAddress, uint16_t conf){
 	int error = 0;
 	
-	return begin(deviceAddress, error);
+	return begin(deviceAddress,  conf, error);
 }
 
-bool DuppaEncoder::begin(uint8_t deviceAddress,   int &error){
+bool DuppaEncoder::begin(uint8_t deviceAddress, uint16_t conf,  int &error){
+	
+	
 	
 	if( _i2cPort.begin(deviceAddress, error)
-//		&& _i2cPort.writeWord(TWIST_COUNT, 0)
-//		&& _i2cPort.writeByte(TWIST_STATUS,  0)
-		)
-	{
+		&& _i2cPort.writeByte(REG_GCONF,  (uint8_t)( conf & 0xFF))
+		&& _i2cPort.writeByte(REG_GCONF2,   (uint8_t)((conf >> 8) & 0xFF))
+		) {
+ 		_gconf = conf;
+		if ((conf & CLK_STRECH_ENABLE) == 0)
+			_clockstrech = 0;
+		else
+			_clockstrech = 1;
+	 
 		_isSetup = true;
 	}
-	
  
 	return _isSetup;
 }
@@ -41,4 +97,27 @@ void DuppaEncoder::stop(){
 	_i2cPort.stop();
 	
 	//	LOG_INFO("QwiicTwist(%02x) stop\n",  _i2cPort.getDevAddr());
+}
+
+
+// Reset the board
+void DuppaEncoder::reset(void) {
+	_i2cPort.writeByte(REG_GCONF,  (uint8_t) 0x80);
+	usleep(400);
+}
+
+
+bool DuppaEncoder::readStatus(uint8_t &regOut) {
+	bool success = false;
+	
+	if(_i2cPort.isAvailable()){
+		uint8_t status = 0;
+		if(_i2cPort.readByte(REG_ESTATUS, status)){
+			
+			regOut = status;
+ 			success = true;
+		}
+	}
+	
+	return success;
 }
