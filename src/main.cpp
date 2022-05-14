@@ -28,14 +28,16 @@ int main(int argc, const char * argv[]) {
 		if(!duppa.begin(0x40, errnum))
 			throw Exception("failed to setup Duppa ", errnum);
 		
-		duppa.reset();
+	//	duppa.reset();
 	
 		uint8_t lastStatus = 0;
 		uint8_t status;
 
+		
+		printf("reading status\n");
+		
 		while(!quit){
-			
-			
+	 
 			if(!duppa.readStatus(status)){
 				printf("readStatus failed\n");
 				quit = true;
