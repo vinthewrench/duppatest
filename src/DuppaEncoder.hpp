@@ -62,8 +62,13 @@ public:
 	void reset();
 
 	
-	bool readStatus(uint8_t&);
-
+	// resets on read.
+	bool readStatus(uint8_t* = nullptr);
+	
+	bool wasClicked();	// pressed and let go
+	bool wasPressed();	// still down
+	bool wasMoved(bool &movedRight);
+	
 	uint8_t	getDevAddr();
  
 private:
@@ -73,6 +78,7 @@ private:
 	I2C 		_i2cPort;
 	bool		_isSetup;
 
+	uint8_t	_lastStatus;
 	
 	uint8_t _clockstrech;
 	uint8_t _gconf = 0x00;

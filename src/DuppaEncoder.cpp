@@ -107,17 +107,40 @@ void DuppaEncoder::reset(void) {
 }
 
 
-bool DuppaEncoder::readStatus(uint8_t &regOut) {
+bool DuppaEncoder::readStatus(uint8_t * regOut) {
 	bool success = false;
 	
 	if(_i2cPort.isAvailable()){
 		uint8_t status = 0;
 		if(_i2cPort.readByte(REG_ESTATUS, status)){
 			
-			regOut = status;
+			_lastStatus = status;
+			if(regOut != nullptr)
+				*regOut = status;
+			
  			success = true;
 		}
 	}
-	
 	return success;
 }
+
+bool DuppaEncoder::wasClicked() {
+	return  (_lastStatus & PUSHR) != 0;
+}
+
+bool DuppaEncoder::wasPressed() {
+	return  (_lastStatus & PUSHP) != 0;
+}
+
+bool DuppaEncoder::wasMoved(bool &movedRight) {
+ 
+	if( (_lastStatus & (RINC | RDEC)) != 0){
+		movedRight = (_lastStatus &  RINC) != 0;
+		return true;
+	}
+		
+		return false;
+}
+
+
+ 

@@ -26,7 +26,7 @@ int main(int argc, const char * argv[]) {
 		
 		uint8_t config = DuppaEncoder::INT_DATA
 		| DuppaEncoder::WRAP_DISABLE
-		| DuppaEncoder::DIRE_LEFT
+		| DuppaEncoder::DIRE_RIGHT
 		| DuppaEncoder::IPUP_ENABLE
 		| DuppaEncoder::RMOD_X1
 		| DuppaEncoder::RGB_ENCODER;
@@ -45,23 +45,36 @@ int main(int argc, const char * argv[]) {
 		
 	//	duppa.reset();
 	
-		uint8_t lastStatus = 0;
-		uint8_t status;
+	 		uint8_t status;
 
 		
 		printf("reading status\n");
 		
 		while(!quit){
 	 
-			if(!duppa.readStatus(status)){
+			if(!duppa.readStatus(&status)){
 				printf("readStatus failed\n");
 				quit = true;
 				continue;
 			}
 		 
-			if(status != lastStatus){
+			if(status != 0){
+				bool cw = false;
+				
 				printf("Status %02x\n", status);
-				lastStatus = status;
+		 
+				if(duppa.wasPressed())
+					printf("Pressed\n");
+	
+				if(duppa.wasClicked())
+					printf("Clicked\n");
+		
+				if(duppa.wasMoved(cw)) {
+					printf("Moved %s", cw? "CW": "CCW");
+				}
+				
+	
+		 
 			}
 			
 			usleep(2000);
