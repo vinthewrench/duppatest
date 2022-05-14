@@ -36,7 +36,7 @@ bool DuppaLEDRing::begin(uint8_t deviceAddress,  int &error){
  		) {
 	 
 		
-		printf("ID Code %02 = %02 \n",deviceAddress, idcode );
+		printf("ID Code %02x = %02x \n",deviceAddress, idcode );
 		_isSetup = true;
 	}
  
