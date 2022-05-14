@@ -129,7 +129,61 @@ bool DuppaLEDRing::PWM_MODE(void) {
 	return success;
 	
 }
- 
+
+bool DuppaLEDRing::PWMFrequencyEnable(uint8_t PWMenable) {
+	bool success = false;
+	
+	if(_i2cPort.isAvailable()){
+		
+		success =	selectBank(PAGE1)
+				&&  _i2cPort.writeByte(PWM_FREQUENCY_ENABLE,	PWMenable);
+
+ 	}
+	return success;
+}
+
+
+bool DuppaLEDRing::SpreadSpectrum(uint8_t spread){
+	bool success = false;
+	
+	if(_i2cPort.isAvailable()){
+		success =	selectBank(PAGE1)
+				&&  _i2cPort.writeByte(SPREADSPECTRUM,	spread);
+	}
+	return success;
+	
+}
+
+
+bool DuppaLEDRing::GlobalCurrent(uint8_t curr) {
+	bool success = false;
+	
+	if(_i2cPort.isAvailable()){
+		success =	selectBank(PAGE1)
+				&&  _i2cPort.writeByte(GLOBALCURRENT,	curr);
+ 	}
+	return success;
+	
+}
+
+bool DuppaLEDRing::SetScaling(uint8_t scal) {
+	bool success = false;
+	
+	if(_i2cPort.isAvailable()){
+		success =	selectBank(PAGE1);
+		if(success){
+			for (uint8_t i = 1; i < 73; i++) {
+				success = _i2cPort.writeByte(i, scal);
+				if(!success) break;
+			}
+		}
+		
+	}
+	return success;
+	
+}
+
+  
 
 bool  DuppaLEDRing::setConfig(uint8_t b){
 	bool success = false;
@@ -140,7 +194,6 @@ bool  DuppaLEDRing::setConfig(uint8_t b){
 				&&  _i2cPort.writeByte(CONFIGURATION,	b);
 	}
 	return success;
-	
 }
  
 

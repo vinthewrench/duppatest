@@ -34,12 +34,16 @@ public:
 
 	uint8_t	getDevAddr();
  
+	bool  setConfig(uint8_t b);
+	bool	PWM_MODE(void) ;
+	bool 	PWMFrequencyEnable(uint8_t PWMenable);
+	bool  SpreadSpectrum(uint8_t spread);
+	bool  SetScaling(uint8_t scal);
+	bool  GlobalCurrent(uint8_t curr);
 	
 private:
  
-	bool  setConfig(uint8_t b);
-	bool  selectBank(uint8_t b);
-	bool	PWM_MODE(void) ;
+ 	bool  selectBank(uint8_t b);
 	
 	const uint8_t issi_led_map[3][24] = {
 	  {0x48, 0x36, 0x24, 0x12, 0x45, 0x33, 0x21, 0x0F, 0x42, 0x30, 0x1E, 0x0C, 0x3F, 0x2D, 0x1B, 0x09, 0x3C, 0x2A, 0x18, 0x06, 0x39, 0x27, 0x15, 0x03}, // Red

@@ -72,6 +72,23 @@ int main(int argc, const char * argv[]) {
 		if(!led1.clearAll())
 			throw Exception("failed to clearAll LED 1");
 
+		
+		if(!led.PWMFrequencyEnable(1))
+			throw Exception("failed to PWMFrequencyEnable LED");
+
+		if(!led.SpreadSpectrum(0b0010110))
+			throw Exception("failed to SpreadSpectrum LED");
+
+		if(!led.GlobalCurrent(0x10))
+			throw Exception("failed to GlobalCurrent LED");
+
+		if(!led.SetScaling(0xFF))
+			throw Exception("failed to SetScaling LED");
+		
+		if(!led.PWM_MODE())
+			throw Exception("failed to PWM_MODE LED");
+
+		
 		for (int i = 0; i < 24; i++) {
 			 led.setGREEN(i, 0xff);
 			 usleep(30 * 1000);
@@ -82,18 +99,26 @@ int main(int argc, const char * argv[]) {
 			 usleep(30 * 1000);
 		  }
 
-		for (int i = 0; i < 24; i++) {
-			 led1.setGREEN(i, 0xff);
-			 usleep(30 * 1000);
-		  }
+//		for (int i = 0; i < 24; i++) {
+//			 led1.setGREEN(i, 0xff);
+//			 usleep(30 * 1000);
+//		  }
+//
+//		for (int i = 0; i < 24; i++) {
+//			 led1.setGREEN(i, 0);
+//			 usleep(30 * 1000);
+//		  }
 
-		for (int i = 0; i < 24; i++) {
-			 led1.setGREEN(i, 0);
-			 usleep(30 * 1000);
-		  }
 
+		if(!led.clearAll())
+			throw Exception("failed to clearAll LED ");
 
-	//duppa.reset();
+		if(!led1.clearAll())
+			throw Exception("failed to clearAll LED 1");
+
+		if(!led.GlobalCurrent(0xFF))
+			throw Exception("failed to GlobalCurrent LED");
+//duppa.reset();
 	 
 		
 		printf("reading status\n");
