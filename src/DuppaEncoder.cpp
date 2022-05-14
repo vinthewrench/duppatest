@@ -74,32 +74,32 @@ bool DuppaEncoder::begin(uint8_t deviceAddress, uint16_t conf){
 
 bool DuppaEncoder::begin(uint8_t deviceAddress, uint16_t conf,  int &error){
 	
-	uint8_t idcode = 0;
-	
 	if( _i2cPort.begin(deviceAddress, error)
-		&& _i2cPort.readByte(REG_IDCODE, idcode) && idcode == 0x53		// check if it's a IC2Encoder
-		&& _i2cPort.writeByte(REG_GCONF,  (uint8_t)( conf & 0xFF))
-		&& _i2cPort.writeByte(REG_GCONF2,   (uint8_t)((conf >> 8) & 0xFF))
+		&& _i2cPort.writeByte(REG_GCONF,  (uint8_t) 0x80)   // reset the device
 		) {
-		_gconf = conf;
-		if ((conf & CLK_STRECH_ENABLE) == 0)
-			_clockstrech = 0;
-		else
-			_clockstrech = 1;
 		
-		_isSetup = true;
-	}
-	
-	
-	return _isSetup;
+		// wait for reset to stablize
+		usleep(400);
+		
+		if( _i2cPort.writeByte(REG_GCONF,  (uint8_t)( conf & 0xFF))
+			&& _i2cPort.writeByte(REG_GCONF2,   (uint8_t)((conf >> 8) & 0xFF)))
+		{
+			_gconf = conf;
+			if ((conf & CLK_STRECH_ENABLE) == 0)
+				_clockstrech = 0;
+			else
+				_clockstrech = 1;
+			
+			_isSetup = true;
+ 		}
+ 	}
+ 	return _isSetup;
 }
 
 void DuppaEncoder::stop(){
 	_isSetup = false;
 	_i2cPort.stop();
-	
-	//	LOG_INFO("QwiicTwist(%02x) stop\n",  _i2cPort.getDevAddr());
-}
+ }
 
 uint8_t	DuppaEncoder::getDevAddr(){
 	return _i2cPort.getDevAddr();
