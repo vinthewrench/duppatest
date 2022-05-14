@@ -60,8 +60,7 @@ public:
 	void stop();
 
 	void reset();
-
-	
+ 
 	// resets on read.
 	bool updateStatus();
 	bool updateStatus(uint8_t &regOut);
@@ -71,7 +70,10 @@ public:
 	bool wasMoved(bool &movedRight);
 	
 	uint8_t	getDevAddr();
- 
+  
+	bool setColor(uint8_t red, uint8_t green, uint8_t blue );
+
+	
 private:
  
  

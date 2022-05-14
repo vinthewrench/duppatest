@@ -74,9 +74,10 @@ bool DuppaEncoder::begin(uint8_t deviceAddress, uint16_t conf){
 
 bool DuppaEncoder::begin(uint8_t deviceAddress, uint16_t conf,  int &error){
 	
-	
+ 	uint8_t idcode;
 	
 	if( _i2cPort.begin(deviceAddress, error)
+		&& _i2cPort.readByte(idcode) && idcode == 0x53		// check if it's a IC2Encoder
 		&& _i2cPort.writeByte(REG_GCONF,  (uint8_t)( conf & 0xFF))
 		&& _i2cPort.writeByte(REG_GCONF2,   (uint8_t)((conf >> 8) & 0xFF))
 		) {
@@ -98,6 +99,10 @@ void DuppaEncoder::stop(){
 	
 	//	LOG_INFO("QwiicTwist(%02x) stop\n",  _i2cPort.getDevAddr());
 }
+
+uint8_t	DuppaEncoder::getDevAddr(){
+	return _i2cPort.getDevAddr();
+};
 
 
 // Reset the board
@@ -147,5 +152,17 @@ bool DuppaEncoder::wasMoved(bool &movedRight) {
 		return false;
 }
 
-
  
+bool DuppaEncoder::setColor(uint8_t red, uint8_t green, uint8_t blue){
+	
+	bool success = false;
+	
+	if(_i2cPort.isAvailable()){
+ 
+		I2C::i2c_block_t block = {red, green, blue};
+		
+		success = _i2cPort.writeBlock(REG_RLED, 3, block);
+	}
+	
+	return success;
+}
