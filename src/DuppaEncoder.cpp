@@ -106,8 +106,13 @@ void DuppaEncoder::reset(void) {
 	usleep(400);
 }
 
+bool DuppaEncoder::updateStatus(){
+	uint8_t status;
+	return updateStatus(status);
+}
+ 
 
-bool DuppaEncoder::readStatus(uint8_t * regOut) {
+bool DuppaEncoder::updateStatus(uint8_t &statusOut) {
 	bool success = false;
 	
 	if(_i2cPort.isAvailable()){
@@ -116,8 +121,7 @@ bool DuppaEncoder::readStatus(uint8_t * regOut) {
 		if(_i2cPort.readByte(REG_ESTATUS, status)){
 			
 			_lastStatus = status;
-			if(regOut != nullptr)
-				*regOut = status;
+			statusOut = status;
 			
  			success = true;
 		}

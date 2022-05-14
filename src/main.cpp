@@ -45,14 +45,14 @@ int main(int argc, const char * argv[]) {
 		
 	//duppa.reset();
 	
-	 		uint8_t status;
-
+	 
 		
 		printf("reading status\n");
 		
 		while(!quit){
-	 
-			if(!duppa.updateStatus(&status)){
+			uint8_t status;
+
+			if(!duppa.updateStatus(status)){
 				printf("readStatus failed\n");
 				quit = true;
 				continue;
