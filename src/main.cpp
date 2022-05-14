@@ -72,7 +72,7 @@ int main(int argc, const char * argv[]) {
 		if(!led1.clearAll())
 			throw Exception("failed to clearAll LED 1");
 
-	/*
+ 
 		if(!led.PWMFrequencyEnable(1))
 			throw Exception("failed to PWMFrequencyEnable LED");
 
@@ -120,7 +120,7 @@ int main(int argc, const char * argv[]) {
 			throw Exception("failed to GlobalCurrent LED");
 //duppa.reset();
 	 
-	*/
+ 
 		printf("reading status\n");
 	
 		if(!duppa.setColor(0, 255, 0))
