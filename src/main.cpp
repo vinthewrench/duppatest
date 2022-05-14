@@ -18,7 +18,8 @@
 int main(int argc, const char * argv[]) {
 	
 	DuppaEncoder duppa;
-	
+	DuppaEncoder duppa1;
+
 	try {
 		
 		bool quit = false;
@@ -42,18 +43,26 @@ int main(int argc, const char * argv[]) {
 		// Open device
 		if(!duppa.begin(0x40, config, errnum))
 			throw Exception("failed to setup Duppa ", errnum);
-		
-	//duppa.reset();
 	
+		// Open device
+		if(!duppa1.begin(0x41, config, errnum))
+			throw Exception("failed to setup Duppa1 ", errnum);
+	
+	//duppa.reset();
 	 
 		
 		printf("reading status\n");
 		
 		duppa.setColor(0, 255, 0);
+	
+		duppa.setColor(0, 0, 255);
+	
 		while(!quit){
 			uint8_t status;
+			uint8_t status1;
 
-			if(!duppa.updateStatus(status)){
+			if(!duppa.updateStatus(status)
+				||duppa1.updateStatus(status1) ){
 				printf("readStatus failed\n");
 				quit = true;
 				continue;
@@ -61,31 +70,39 @@ int main(int argc, const char * argv[]) {
 		 
 			if(status != 0){
 				bool cw = false;
-				
-				printf("Status %02x - ", status);
-		 
 				if(duppa.wasPressed())
-					printf("Pressed ");
-	
+					printf("L Pressed ");
+				
 				if(duppa.wasClicked())
-					printf("Clicked ");
-		
-				if(duppa.wasMoved(cw)) {
-					
-					printf("Moved %s ", cw? "CW": "CCW");
-		 
-				}
+					printf("L Clicked ");
+				
+				if(duppa.wasMoved(cw))
+					printf("L Moved %s ", cw? "CW": "CCW");
 				
 				printf("\n");
 			}
-			
+	
+			if(status1 != 0){
+				bool cw = false;
+				if(duppa1.wasPressed())
+					printf("R Pressed ");
+				
+				if(duppa1.wasClicked())
+					printf("R Clicked ");
+				
+				if(duppa1.wasMoved(cw))
+					printf("R Moved %s ", cw? "CW": "CCW");
+				printf("\n");
+			}
+
 			usleep(2000);
 			
 		}
 		
 		
 		duppa.stop();
-		
+		duppa1.stop();
+	
 	}
 	
 	catch ( const Exception& e)  {
