@@ -93,10 +93,10 @@ int main(int argc, const char * argv[]) {
 			 usleep(30 * 1000);
 		  }
 
-		for (int i = 0; i < 24; i++) {
-			 led.setGREEN(i, 0);
-			 usleep(30 * 1000);
-		  }
+//		for (int i = 0; i < 24; i++) {
+//			 led.setGREEN(i, 0);
+//			 usleep(30 * 1000);
+//		  }
 
 //		for (int i = 0; i < 24; i++) {
 //			 led1.setGREEN(i, 0xff);
