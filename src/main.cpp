@@ -77,7 +77,7 @@ int main(int argc, const char * argv[]) {
 						uint8_t green = 0;
 						uint8_t blue = 0;
 					
-					int val = 0;
+					static int val = 0;
 					
 					val +=  (cw? 8:-8);
 					if(val < 0) val = 0;
