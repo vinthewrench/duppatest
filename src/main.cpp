@@ -78,11 +78,13 @@ int main(int argc, const char * argv[]) {
 	 
 		
 		printf("reading status\n");
-		
-		duppa.setColor(0, 255, 0);
 	
-		duppa1.setColor(0, 0, 255);
-	
+		if(!duppa.setColor(0, 255, 0))
+			throw Exception("failed to setColor Duppa");
+
+		if(!duppa1.setColor(0, 0, 255))
+			throw Exception("failed to setColor Duppa1 ");
+ 
 		while(!quit){
 			uint8_t status;
 			uint8_t status1;
