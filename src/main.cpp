@@ -13,12 +13,16 @@
 
 #include "CommonDefs.hpp"
 #include "DuppaEncoder.hpp"
+#include "DuppaLEDRing.hpp"
+ 
 #include <unistd.h>
 
 int main(int argc, const char * argv[]) {
 	
 	DuppaEncoder duppa;
 	DuppaEncoder duppa1;
+	DuppaLEDRing led;
+	DuppaLEDRing led1;
 
 	try {
 		
@@ -47,6 +51,15 @@ int main(int argc, const char * argv[]) {
 		// Open device
 		if(!duppa1.begin(0x41, config, errnum))
 			throw Exception("failed to setup Duppa1 ", errnum);
+	
+		
+		// Open device
+		if(!led.begin(0x60, errnum))
+			throw Exception("failed to setup LED   ", errnum);
+	
+		// Open device
+		if(!led1.begin(0x61, errnum))
+			throw Exception("failed to setup LED 1 ", errnum);
 	
 	//duppa.reset();
 	 
@@ -102,7 +115,9 @@ int main(int argc, const char * argv[]) {
 		
 		duppa.stop();
 		duppa1.stop();
-	
+		led.stop();
+		led1.stop();
+
 	}
 	
 	catch ( const Exception& e)  {

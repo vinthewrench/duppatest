@@ -54,7 +54,7 @@ enum I2C_Register {
 	REG_IDCODE = 0x70,
 	REG_VERSION = 0x71,
 	REG_EEPROMS = 0x80,
-} I2C1_REGISTER;
+} ;
 
 
 

@@ -12,6 +12,7 @@ set(SOURCES
 	src/ErrorMgr.cpp
 	src/I2C.cpp
 	src/DuppaEncoder.cpp
+	src/DuppaLEDRing.cpp
 	)
 
  
