@@ -74,10 +74,10 @@ bool DuppaEncoder::begin(uint8_t deviceAddress, uint16_t conf){
 
 bool DuppaEncoder::begin(uint8_t deviceAddress, uint16_t conf,  int &error){
 	
- 	uint8_t idcode;
+ 	uint8_t idcode = 0;
 	
 	if( _i2cPort.begin(deviceAddress, error)
-		&& _i2cPort.readByte(idcode) && idcode == 0x53		// check if it's a IC2Encoder
+		&& _i2cPort.readByte(REG_IDCODE, idcode) && idcode == 0x53		// check if it's a IC2Encoder
 		&& _i2cPort.writeByte(REG_GCONF,  (uint8_t)( conf & 0xFF))
 		&& _i2cPort.writeByte(REG_GCONF2,   (uint8_t)((conf >> 8) & 0xFF))
 		) {
@@ -89,6 +89,7 @@ bool DuppaEncoder::begin(uint8_t deviceAddress, uint16_t conf,  int &error){
 	 
 		_isSetup = true;
 	}
+ 
  
 	return _isSetup;
 }
