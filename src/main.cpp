@@ -73,9 +73,9 @@ int main(int argc, const char * argv[]) {
 					
 					printf("Moved %s ", cw? "CW": "CCW");
 					
-					uint8_t red = 0xff;
-					uint8_t green = 128;
-					uint8_t blue = 0xff;
+					static uint8_t red = 0;
+					static uint8_t green = 128;
+					static uint8_t blue = 0;
 					
 					green +=  (cw? 8:-8);
 					
