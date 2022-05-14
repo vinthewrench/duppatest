@@ -9,7 +9,7 @@
 #include <unistd.h>
 
 enum I2C_Register {
- 	COMMANDREGISTER 		= 0xFD,
+	COMMANDREGISTER 		= 0xFD,
 	COMMANDREGISTER_LOCK = 0xFE,
 	ID_REGISTER 			= 0xFC,
 	ULOCK_CODE 				= 0xC5,
@@ -25,7 +25,7 @@ enum I2C_Register {
 	
 	PAGE0 					= 0x00,
 	PAGE1 					= 0x01
- } ;
+} ;
 
 
 #define ISSI3746_PAGE0 0x00
@@ -62,15 +62,15 @@ bool DuppaLEDRing::begin(uint8_t deviceAddress){
 }
 
 bool DuppaLEDRing::begin(uint8_t deviceAddress,  int &error){
- 
+	
 	if( _i2cPort.begin(deviceAddress, error)
-			&& setConfig(0x01) //Normal operation
-	  		) {
-	 
-	 		_isSetup = true;
+		&& setConfig(0x01) //Normal operation
+		) {
+		
+		_isSetup = true;
 	}
- 
- 
+	
+	
 	return _isSetup;
 }
 
@@ -103,7 +103,7 @@ bool DuppaLEDRing::reset(void) {
 	
 }
 
- 
+
 bool DuppaLEDRing::clearAll(void) {
 	bool success = false;
 	
@@ -122,23 +122,19 @@ bool DuppaLEDRing::clearAll(void) {
 bool DuppaLEDRing::PWM_MODE(void) {
 	bool success = false;
 	
-	if(_i2cPort.isAvailable()){
-		
-		success =	selectBank(PAGE0);
-	}
+	success =	selectBank(PAGE0);
+	
 	return success;
 	
 }
 
 bool DuppaLEDRing::PWMFrequencyEnable(uint8_t PWMenable) {
 	bool success = false;
-	
-	if(_i2cPort.isAvailable()){
-		
-		success =	selectBank(PAGE1)
-				&&  _i2cPort.writeByte(PWM_FREQUENCY_ENABLE,	PWMenable);
 
- 	}
+	success =	selectBank(PAGE1)
+	&&  _i2cPort.writeByte(PWM_FREQUENCY_ENABLE,	PWMenable);
+	
+	
 	return success;
 }
 
@@ -146,10 +142,8 @@ bool DuppaLEDRing::PWMFrequencyEnable(uint8_t PWMenable) {
 bool DuppaLEDRing::SpreadSpectrum(uint8_t spread){
 	bool success = false;
 	
-	if(_i2cPort.isAvailable()){
-		success =	selectBank(PAGE1)
-				&&  _i2cPort.writeByte(SPREADSPECTRUM,	spread);
-	}
+	success =	selectBank(PAGE1)
+	&&  _i2cPort.writeByte(SPREADSPECTRUM,	spread);
 	return success;
 	
 }
@@ -157,11 +151,8 @@ bool DuppaLEDRing::SpreadSpectrum(uint8_t spread){
 
 bool DuppaLEDRing::GlobalCurrent(uint8_t curr) {
 	bool success = false;
-	
-	if(_i2cPort.isAvailable()){
-		success =	selectBank(PAGE1)
-				&&  _i2cPort.writeByte(GLOBALCURRENT,	curr);
- 	}
+	success =	selectBank(PAGE1)
+	&&  _i2cPort.writeByte(GLOBALCURRENT,	curr);
 	return success;
 	
 }
@@ -169,43 +160,40 @@ bool DuppaLEDRing::GlobalCurrent(uint8_t curr) {
 bool DuppaLEDRing::SetScaling(uint8_t scal) {
 	bool success = false;
 	
-	if(_i2cPort.isAvailable()){
-		success =	selectBank(PAGE1);
-		if(success){
-			for (uint8_t i = 1; i < 73; i++) {
-				success = _i2cPort.writeByte(i, scal);
-				if(!success) break;
-			}
+	success =	selectBank(PAGE1);
+	if(success){
+		for (uint8_t i = 1; i < 73; i++) {
+			success = _i2cPort.writeByte(i, scal);
+			if(!success) break;
 		}
-		
 	}
+	
 	return success;
 	
 }
 
-  
+
 
 bool  DuppaLEDRing::setConfig(uint8_t b){
 	bool success = false;
 	
-	if(_i2cPort.isAvailable()){
-		
-		success =	selectBank(PAGE1)
-				&&  _i2cPort.writeByte(CONFIGURATION,	b);
-	}
+	
+	success =	selectBank(PAGE1)
+	&&  _i2cPort.writeByte(CONFIGURATION,	b);
+	
 	return success;
 }
- 
+
 
 
 bool  DuppaLEDRing::selectBank(uint8_t b){
 	bool success = false;
 	
 	if(_i2cPort.isAvailable()){
- 
+		
 		success =	_i2cPort.writeByte(COMMANDREGISTER_LOCK, ULOCK_CODE)
-					&&  _i2cPort.writeByte(COMMANDREGISTER,	b);
- 	}
+		&&  _i2cPort.writeByte(COMMANDREGISTER,	b);
+	}
 	
 	return success;
 }
@@ -217,8 +205,8 @@ bool  DuppaLEDRing::setColor(uint8_t led_n, uint8_t red, uint8_t green, uint8_t 
 		success =	_i2cPort.writeByte(issi_led_map[0][led_n], red)
 		&& 	_i2cPort.writeByte(issi_led_map[1][led_n], green)
 		&& 	_i2cPort.writeByte(issi_led_map[2][led_n], blue);
-	 }
- 
+	}
+	
 	return success;
 }
 
@@ -227,8 +215,8 @@ bool  DuppaLEDRing::setRED(uint8_t led_n, uint8_t color){
 	
 	if(_i2cPort.isAvailable()){
 		success =	_i2cPort.writeByte(issi_led_map[0][led_n], color);
-	 }
- 
+	}
+	
 	return success;
 }
 
@@ -237,8 +225,8 @@ bool  DuppaLEDRing::setGREEN(uint8_t led_n, uint8_t color){
 	
 	if(_i2cPort.isAvailable()){
 		success =	_i2cPort.writeByte(issi_led_map[1][led_n], color);
-	 }
- 
+	}
+	
 	return success;
 }
 
@@ -247,9 +235,9 @@ bool  DuppaLEDRing::setBLUE(uint8_t led_n, uint8_t color){
 	
 	if(_i2cPort.isAvailable()){
 		success =	_i2cPort.writeByte(issi_led_map[2][led_n], color);
-	 }
- 
+	}
+	
 	return success;
 }
 
- 
+

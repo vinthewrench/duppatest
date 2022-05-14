@@ -87,8 +87,7 @@ int main(int argc, const char * argv[]) {
 		
 		if(!led.PWM_MODE())
 			throw Exception("failed to PWM_MODE LED");
-
-		
+ 
 		for (int i = 0; i < 24; i++) {
 			 led.setGREEN(i, 0xff);
 			 usleep(30 * 1000);
