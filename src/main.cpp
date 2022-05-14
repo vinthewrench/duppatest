@@ -55,7 +55,7 @@ int main(int argc, const char * argv[]) {
 		
 		duppa.setColor(0, 255, 0);
 	
-		duppa.setColor(0, 0, 255);
+		duppa1.setColor(0, 0, 255);
 	
 		while(!quit){
 			uint8_t status;
