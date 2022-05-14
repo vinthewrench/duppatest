@@ -24,8 +24,23 @@ int main(int argc, const char * argv[]) {
 		bool quit = false;
 		int  errnum = 0;
 		
+		uint8_t config = DuppaEncoder::INT_DATA
+		| DuppaEncoder::WRAP_DISABLE
+		| DuppaEncoder::DIRE_LEFT
+		| DuppaEncoder::IPUP_ENABLE
+		| DuppaEncoder::RMOD_X1
+		| DuppaEncoder::RGB_ENCODER;
+
+		
+//		INT_DATA= The register are considered integer.
+//			WRAP_DISABLE= The WRAP option is disabled
+//			DIRE_LEFT= Encoder left direction increase the value
+//			IPUP_ENABLE= INT pin have the pull-up enabled.
+//			RMOD_X1= Encoder configured as X1.
+//			RGB_ENCODER= type of encoder is RGB, change to STD_ENCODER in case you are using a normal rotary encoder.
+
 		// Open device
-		if(!duppa.begin(0x40, errnum))
+		if(!duppa.begin(0x40, config, errnum))
 			throw Exception("failed to setup Duppa ", errnum);
 		
 	//	duppa.reset();
