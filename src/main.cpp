@@ -79,7 +79,7 @@ int main(int argc, const char * argv[]) {
 		if(!led.SpreadSpectrum(0b0010110))
 			throw Exception("failed to SpreadSpectrum LED");
 
-		if(!led.GlobalCurrent(0x10))
+		if(!led.GlobalCurrent(0xFF))
 			throw Exception("failed to GlobalCurrent LED");
 
 		if(!led.SetScaling(0xFF))
@@ -93,6 +93,7 @@ int main(int argc, const char * argv[]) {
 			 usleep(30 * 1000);
 		  }
 
+		sleep(2);
 //		for (int i = 0; i < 24; i++) {
 //			 led.setGREEN(i, 0);
 //			 usleep(30 * 1000);
