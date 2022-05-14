@@ -6,7 +6,7 @@
 //
 
 #include "DuppaLEDRing.hpp"
-
+#include <unistd.h>
 
 enum I2C_Register {
  	COMMANDREGISTER 		= 0xFD,
@@ -64,6 +64,7 @@ bool DuppaLEDRing::begin(uint8_t deviceAddress){
 bool DuppaLEDRing::begin(uint8_t deviceAddress,  int &error){
  
 	if( _i2cPort.begin(deviceAddress, error)
+			&& setConfig(0x01) //Normal operation
 	  		) {
 	 
 	 		_isSetup = true;
@@ -93,6 +94,10 @@ bool DuppaLEDRing::reset(void) {
 		
 		success =	selectBank(PAGE1)
 		&&  _i2cPort.writeByte(RESET_REG,0xAE);
+		
+		if(success){
+			usleep(400);
+		}
 	}
 	return success;
 	
@@ -126,6 +131,20 @@ bool DuppaLEDRing::PWM_MODE(void) {
 }
  
 
+bool  DuppaLEDRing::setConfig(uint8_t b){
+	bool success = false;
+	
+	if(_i2cPort.isAvailable()){
+		
+		success =	selectBank(PAGE1)
+				&&  _i2cPort.writeByte(CONFIGURATION,	b);
+	}
+	return success;
+	
+}
+ 
+
+
 bool  DuppaLEDRing::selectBank(uint8_t b){
 	bool success = false;
 	
@@ -138,7 +157,46 @@ bool  DuppaLEDRing::selectBank(uint8_t b){
 	return success;
 }
 
+bool  DuppaLEDRing::setColor(uint8_t led_n, uint8_t red, uint8_t green, uint8_t blue ){
+	bool success = false;
+	
+	if(_i2cPort.isAvailable()){
+		success =	_i2cPort.writeByte(issi_led_map[0][led_n], red)
+		&& 	_i2cPort.writeByte(issi_led_map[1][led_n], green)
+		&& 	_i2cPort.writeByte(issi_led_map[2][led_n], blue);
+	 }
+ 
+	return success;
+}
+
+bool  DuppaLEDRing::setRED(uint8_t led_n, uint8_t color){
+	bool success = false;
+	
+	if(_i2cPort.isAvailable()){
+		success =	_i2cPort.writeByte(issi_led_map[0][led_n], color);
+	 }
+ 
+	return success;
+}
+
+bool  DuppaLEDRing::setGREEN(uint8_t led_n, uint8_t color){
+	bool success = false;
+	
+	if(_i2cPort.isAvailable()){
+		success =	_i2cPort.writeByte(issi_led_map[1][led_n], color);
+	 }
+ 
+	return success;
+}
+
+bool  DuppaLEDRing::setBLUE(uint8_t led_n, uint8_t color){
+	bool success = false;
+	
+	if(_i2cPort.isAvailable()){
+		success =	_i2cPort.writeByte(issi_led_map[2][led_n], color);
+	 }
+ 
+	return success;
+}
 
  
-
-
