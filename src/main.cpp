@@ -49,6 +49,7 @@ int main(int argc, const char * argv[]) {
 		
 		printf("reading status\n");
 		
+		duppa.setColor(0, 255, 0);
 		while(!quit){
 			uint8_t status;
 
@@ -72,19 +73,7 @@ int main(int argc, const char * argv[]) {
 				if(duppa.wasMoved(cw)) {
 					
 					printf("Moved %s ", cw? "CW": "CCW");
-					
-					uint8_t red = 0;
-						uint8_t green = 0;
-						uint8_t blue = 0;
-					
-					static int val = 0;
-					
-					val +=  (cw? 8:-8);
-					if(val < 0) val = 0;
-					else if (val > 255) val = 255;
-				 
-					duppa.setColor(val, val, val);
-
+		 
 				}
 				
 				printf("\n");
