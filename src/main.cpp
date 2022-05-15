@@ -158,12 +158,14 @@ int main(int argc, const char * argv[]) {
 					printf("L Clicked ");
 				
 				if(duppa.wasMoved(cw)){
-					printf("L Moved %s ", cw? "CW": "CCW");
 					
 					led1.setGREEN(cntr, 0xff);
 					cntr += cw ?1:-1;
 					if (cntr> 23) cntr = 23;
 					else if (cntr < 0) cntr = 0;
+					
+					printf("L Moved %s %d ", cw? "CW": "CCW", cntr);
+		
 					led1.setGREEN(cntr, 0);
 				}
 				printf("\n");
