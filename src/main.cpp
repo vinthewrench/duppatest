@@ -192,15 +192,15 @@ int main(int argc, const char * argv[]) {
 				
 				if(duppa1.wasMoved(cw)){
 					//				printf("R Moved %s ", cw? "CW": "CCW");
-					
-					
-					led1.setBLUE( cntr1 % 27, 0);
+		 
+					led1.setBLUE( cntr1, 0);
 					
 					cntr1 += cw ?-1:1;
+					cntr1 = cntr1 % 27;
 //					if (cntr1> 23) cntr1 = 23;
 //					else if (cntr1 < 0) cntr1 = 0;
 //					//			printf("L Moved %s %d ", cw? "CW": "CCW", cntr);
-					led1.setBLUE(cntr1 % 27, 0x7f);
+					led1.setBLUE(cntr1 , 0x7f);
 					
 				}
 	//			printf("\n");
