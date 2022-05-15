@@ -167,7 +167,7 @@ int main(int argc, const char * argv[]) {
 					
 		//			printf("L Moved %s %d ", cw? "CW": "CCW", cntr);
 					printf("setGREEN(%d) on\n",cntr);
-					led.setGREEN(cntr, 0xff);
+					led.setGREEN(cntr, 0x7f);
 				}
 	//			printf("\n");
 			}
