@@ -194,9 +194,9 @@ int main(int argc, const char * argv[]) {
 				if(duppa1.wasMoved(cw)){
 					//				printf("R Moved %s ", cw? "CW": "CCW");
 					
-					led1.setBLUE( cntr1 % 23, 0);
+					led1.setBLUE( 23- (cntr1 % 23), 0);
 					cntr1 += cw ?-1:1;
-					led1.setBLUE(cntr1 % 23 , 0x7f);
+					led1.setBLUE(23- (cntr1 % 23) , 0x7f);
 					printf("R Moved %s %d \n", cw? "CW": "CCW", cntr1);
 
 					
