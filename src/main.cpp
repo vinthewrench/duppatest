@@ -107,22 +107,22 @@ int main(int argc, const char * argv[]) {
 		led.PWM_MODE();
 		
 				for (int i = 0; i < 24; i++) {
-					 led.setGREEN(i, 0xff);
+					 led.setGREEN(23-i, 0xff);
 					 usleep(10 * 1000);
 				  }
 		
 					for (int i = 0; i < 24; i++) {
-					 led.setGREEN(i, 0);
+					 led.setGREEN(23- i, 0);
 					 usleep(10 * 1000);
 				  }
 		//
 				for (int i = 0; i < 24; i++) {
-					 led1.setBLUE(i, 0xff);
+					 led1.setBLUE(23 - i, 0xff);
 					 usleep(30 * 1000);
 				  }
 		
 				for (int i = 0; i < 24; i++) {
-					 led1.setBLUE(i, 0);
+					 led1.setBLUE(23 - i, 0);
 					 usleep(30 * 1000);
 				  }
 		
