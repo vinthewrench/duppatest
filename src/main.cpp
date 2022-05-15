@@ -84,9 +84,9 @@ int main(int argc, const char * argv[]) {
 //		if(!led.GlobalCurrent(0xFF))
 //			throw Exception("failed to GlobalCurrent LED");
 //
-//		if(!led.SetScaling(0xFF))
-//			throw Exception("failed to SetScaling LED");
-//		
+		if(!led.SetScaling(0xFF))
+			throw Exception("failed to SetScaling LED");
+		
 //		if(!led.PWM_MODE())
 //			throw Exception("failed to PWM_MODE LED");
 //
