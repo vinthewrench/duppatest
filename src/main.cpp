@@ -75,8 +75,8 @@ int main(int argc, const char * argv[]) {
  
 		led.setConfig(0x01);
 		
-		if(!led.PWMFrequencyEnable(1))
-			throw Exception("failed to PWMFrequencyEnable LED");
+//		if(!led.PWMFrequencyEnable(1))
+//			throw Exception("failed to PWMFrequencyEnable LED");
 
 //		if(!led.SpreadSpectrum(0b0010110))
 //			throw Exception("failed to SpreadSpectrum LED");
