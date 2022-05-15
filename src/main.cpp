@@ -195,7 +195,7 @@ int main(int argc, const char * argv[]) {
 					//				printf("R Moved %s ", cw? "CW": "CCW");
 					
 					led1.setBLUE( cntr1 % 23, 0);
-					cntr1 += cw ? -1: 1;
+					cntr1 += cw ?-1:1;
 					led1.setBLUE(cntr1 % 23 , 0x7f);
 					
 				}
