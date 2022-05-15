@@ -79,7 +79,7 @@ int main(int argc, const char * argv[]) {
 		led.GlobalCurrent(010);
 		led.PWM_MODE();
 
-		led1setConfig(0x01);
+		led1.setConfig(0x01);
 		led1.SetScaling(0xFF);
 		led1.GlobalCurrent(010);
 		led1.PWM_MODE();
