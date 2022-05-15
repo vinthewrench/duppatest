@@ -91,7 +91,7 @@ int main(int argc, const char * argv[]) {
 			throw Exception("failed to PWM_MODE LED");
  
 		
-		led.GlobalCurrent(010)
+		led.GlobalCurrent(010);
 		led.PWM_MODE();
 		 
 		for (int i = 0; i < 24; i++) {
