@@ -176,9 +176,9 @@ int main(int argc, const char * argv[]) {
 					cntr += cw ?1:-1;
 					if (cntr> 23) cntr = 23;
 					else if (cntr < 0) cntr = 0;
-			\
+			 
 					//			printf("L Moved %s %d ", cw? "CW": "CCW", cntr);
-					led.setGREEN(cntr, cw?0x7f:00);
+					led.setGREEN(cntr, cw?0:128);
 				}
 				//			printf("\n");
 			}
