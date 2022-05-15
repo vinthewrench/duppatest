@@ -182,7 +182,7 @@ int main(int argc, const char * argv[]) {
 	
 			if(status1 != 0){
 				bool cw = false;
-				static int cntr1 = 0;
+				static uint8_t cntr1 = 0;
 	
 				if(duppa1.wasPressed())
 					printf("R Pressed \n");
