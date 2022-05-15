@@ -73,7 +73,7 @@ int main(int argc, const char * argv[]) {
 			throw Exception("failed to clearAll LED 1");
 
  
-		led.setConfig(0x01);
+	//	led.setConfig(0x01);
 		
 //		if(!led.PWMFrequencyEnable(1))
 //			throw Exception("failed to PWMFrequencyEnable LED");
