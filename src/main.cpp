@@ -105,26 +105,26 @@ int main(int argc, const char * argv[]) {
 		
 		led.GlobalCurrent(010);
 		led.PWM_MODE();
+		
+				for (int i = 0; i < 24; i++) {
+					 led.setGREEN(i, 0xff);
+					 usleep(10 * 1000);
+				  }
+		
+					for (int i = 0; i < 24; i++) {
+					 led.setGREEN(i, 0);
+					 usleep(10 * 1000);
+				  }
 		//
-		//		for (int i = 0; i < 24; i++) {
-		//			 led.setGREEN(i, 0xff);
-		//			 usleep(10 * 1000);
-		//		  }
-		//
-		//			for (int i = 0; i < 24; i++) {
-		//			 led.setGREEN(i, 0);
-		//			 usleep(10 * 1000);
-		//		  }
-		//
-		//		for (int i = 0; i < 24; i++) {
-		//			 led1.setGREEN(i, 0xff);
-		//			 usleep(30 * 1000);
-		//		  }
-		//
-		//		for (int i = 0; i < 24; i++) {
-		//			 led1.setGREEN(i, 0);
-		//			 usleep(30 * 1000);
-		//		  }
+				for (int i = 0; i < 24; i++) {
+					 led1.setBLUE(i, 0xff);
+					 usleep(30 * 1000);
+				  }
+		
+				for (int i = 0; i < 24; i++) {
+					 led1.setBLUE(i, 0);
+					 usleep(30 * 1000);
+				  }
 		
 		
 		//		if(!led.clearAll())
