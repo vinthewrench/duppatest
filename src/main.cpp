@@ -78,15 +78,15 @@ int main(int argc, const char * argv[]) {
 		if(!led.PWMFrequencyEnable(1))
 			throw Exception("failed to PWMFrequencyEnable LED");
 
-		if(!led.SpreadSpectrum(0b0010110))
-			throw Exception("failed to SpreadSpectrum LED");
-//
+//		if(!led.SpreadSpectrum(0b0010110))
+//			throw Exception("failed to SpreadSpectrum LED");
+////
 //		if(!led.GlobalCurrent(0xFF))
 //			throw Exception("failed to GlobalCurrent LED");
 //
-		if(!led.SetScaling(0xFF))
-			throw Exception("failed to SetScaling LED");
-		
+//		if(!led.SetScaling(0xFF))
+//			throw Exception("failed to SetScaling LED");
+//		
 //		if(!led.PWM_MODE())
 //			throw Exception("failed to PWM_MODE LED");
 //
