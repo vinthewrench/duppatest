@@ -73,6 +73,8 @@ int main(int argc, const char * argv[]) {
 			throw Exception("failed to clearAll LED 1");
 
  
+		led.setConfig(0x01);
+		
 		if(!led.PWMFrequencyEnable(1))
 			throw Exception("failed to PWMFrequencyEnable LED");
 
@@ -88,16 +90,20 @@ int main(int argc, const char * argv[]) {
 		if(!led.PWM_MODE())
 			throw Exception("failed to PWM_MODE LED");
  
+		
+		led.GlobalCurrent(010)
+		led.PWM_MODE();
+		 
 		for (int i = 0; i < 24; i++) {
 			 led.setGREEN(i, 0xff);
 			 usleep(30 * 1000);
 		  }
 
 		sleep(2);
-//		for (int i = 0; i < 24; i++) {
-//			 led.setGREEN(i, 0);
-//			 usleep(30 * 1000);
-//		  }
+		for (int i = 0; i < 24; i++) {
+			 led.setGREEN(i, 0);
+			 usleep(30 * 1000);
+		  }
 
 //		for (int i = 0; i < 24; i++) {
 //			 led1.setGREEN(i, 0xff);

@@ -176,8 +176,7 @@ bool DuppaLEDRing::SetScaling(uint8_t scal) {
 
 bool  DuppaLEDRing::setConfig(uint8_t b){
 	bool success = false;
-	
-	
+
 	success =	selectBank(PAGE1)
 	&&  _i2cPort.writeByte(CONFIGURATION,	b);
 	
