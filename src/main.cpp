@@ -158,14 +158,14 @@ int main(int argc, const char * argv[]) {
 				
 				if(duppa.wasMoved(cw)){
 					
-					led1.setGREEN(cntr, 0xff);
+					led.setGREEN(cntr, 0xff);
 					cntr += cw ?1:-1;
 					if (cntr> 23) cntr = 23;
 					else if (cntr < 0) cntr = 0;
 					
 					printf("L Moved %s %d ", cw? "CW": "CCW", cntr);
 		
-					led1.setGREEN(cntr, 0);
+					led.setGREEN(cntr, 0);
 				}
 				printf("\n");
 			}
