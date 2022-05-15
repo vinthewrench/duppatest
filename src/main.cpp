@@ -166,19 +166,17 @@ int main(int argc, const char * argv[]) {
 					printf("L Pressed \n");
 				
 				if(duppa.wasClicked()){
-					printf("L Clicked \n");
 					quit = true;
 				}
 				
 				if(duppa.wasMoved(cw)){
-	//				led.setGREEN(cntr, 0);
+					led.setGREEN(cntr, 0);
 					
-					cntr += cw ?1:-1;
+					cntr += cw ?-1:1;
 					if (cntr> 23) cntr = 23;
 					else if (cntr < 0) cntr = 0;
-			 
 					//			printf("L Moved %s %d ", cw? "CW": "CCW", cntr);
-					led.setGREEN(cntr, cw?0:128);
+					led.setGREEN(cntr, 0x7f);
 				}
 				//			printf("\n");
 			}
