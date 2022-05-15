@@ -53,11 +53,11 @@ int main(int argc, const char * argv[]) {
 			throw Exception("failed to setup Duppa1 ", errnum);
 	
 		// Open device
-		if(!led.begin(0x60, errnum))
+		if(!led.begin(0x61, errnum))
 			throw Exception("failed to setup LED   ", errnum);
 
 		// Open device
-		if(!led1.begin(0x61, errnum))
+		if(!led1.begin(0x60, errnum))
 			throw Exception("failed to setup LED  1  ", errnum);
 
 		if(!led.reset())
@@ -147,6 +147,9 @@ int main(int argc, const char * argv[]) {
 			}
 		 
 			if(status != 0){
+				
+				static int cntr = 0;
+				
 				bool cw = false;
 				if(duppa.wasPressed())
 					printf("L Pressed ");
@@ -154,9 +157,15 @@ int main(int argc, const char * argv[]) {
 				if(duppa.wasClicked())
 					printf("L Clicked ");
 				
-				if(duppa.wasMoved(cw))
+				if(duppa.wasMoved(cw)){
 					printf("L Moved %s ", cw? "CW": "CCW");
-				
+					
+					led1.setGREEN(cntr, 0xff);
+					cntr += cw ?1:-1;
+					if (cntr> 23) cntr = 23;
+					else if (cntr < 0) cntr = 0;
+					led1.setGREEN(cntr, 0);
+				}
 				printf("\n");
 			}
 	
