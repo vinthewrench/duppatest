@@ -99,8 +99,7 @@ int main(int argc, const char * argv[]) {
 			 usleep(30 * 1000);
 		  }
 
-		sleep(2);
-		for (int i = 0; i < 24; i++) {
+			for (int i = 0; i < 24; i++) {
 			 led.setGREEN(i, 0);
 			 usleep(30 * 1000);
 		  }
@@ -116,15 +115,15 @@ int main(int argc, const char * argv[]) {
 //		  }
 
 
-		if(!led.clearAll())
-			throw Exception("failed to clearAll LED ");
-
-		if(!led1.clearAll())
-			throw Exception("failed to clearAll LED 1");
-
-		if(!led.GlobalCurrent(0xFF))
-			throw Exception("failed to GlobalCurrent LED");
-//duppa.reset();
+//		if(!led.clearAll())
+//			throw Exception("failed to clearAll LED ");
+//
+//		if(!led1.clearAll())
+//			throw Exception("failed to clearAll LED 1");
+//
+//		if(!led.GlobalCurrent(0xFF))
+//			throw Exception("failed to GlobalCurrent LED");
+////duppa.reset();
 	 
  
 		printf("reading status\n");
