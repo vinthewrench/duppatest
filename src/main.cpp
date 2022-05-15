@@ -108,22 +108,22 @@ int main(int argc, const char * argv[]) {
 		
 				for (int i = 0; i < 24; i++) {
 					 led.setGREEN(23-i, 0xff);
-					 usleep(10 * 1000);
+					 usleep(20 * 1000);
 				  }
 		
 					for (int i = 0; i < 24; i++) {
 					 led.setGREEN(23- i, 0);
-					 usleep(10 * 1000);
+					 usleep(20 * 1000);
 				  }
 		//
 				for (int i = 0; i < 24; i++) {
 					 led1.setBLUE(23 - i, 0xff);
-					 usleep(30 * 1000);
+					 usleep(20 * 1000);
 				  }
 		
 				for (int i = 0; i < 24; i++) {
 					 led1.setBLUE(23 - i, 0);
-					 usleep(30 * 1000);
+					 usleep(20 * 1000);
 				  }
 		
 		
