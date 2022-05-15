@@ -73,17 +73,29 @@ int main(int argc, const char * argv[]) {
 			throw Exception("failed to clearAll LED 1");
 
  
-	//	led.setConfig(0x01);
-		
-//		if(!led.PWMFrequencyEnable(1))
-//			throw Exception("failed to PWMFrequencyEnable LED");
+#if 1
+		led.setConfig(0x01);
+		led.SetScaling(0xFF);
+		led.GlobalCurrent(010);
+		led.PWM_MODE();
 
-//		if(!led.SpreadSpectrum(0b0010110))
-//			throw Exception("failed to SpreadSpectrum LED");
-////
-//		if(!led.GlobalCurrent(0xFF))
-//			throw Exception("failed to GlobalCurrent LED");
+		led1setConfig(0x01);
+		led1.SetScaling(0xFF);
+		led1.GlobalCurrent(010);
+		led1.PWM_MODE();
+
+#endif
+		led.setConfig(0x01);
+		
+		if(!led.PWMFrequencyEnable(1))
+			throw Exception("failed to PWMFrequencyEnable LED");
+
+		if(!led.SpreadSpectrum(0b0010110))
+			throw Exception("failed to SpreadSpectrum LED");
 //
+		if(!led.GlobalCurrent(0xFF))
+			throw Exception("failed to GlobalCurrent LED");
+
 		if(!led.SetScaling(0xFF))
 			throw Exception("failed to SetScaling LED");
 		
@@ -151,22 +163,18 @@ int main(int argc, const char * argv[]) {
 				
 				bool cw = false;
 				if(duppa.wasPressed())
-					printf("L Pressed ");
+					printf("L Pressed \n");
 				
 				if(duppa.wasClicked())
-					printf("L Clicked ");
+					printf("L Clicked \n");
 				
 				if(duppa.wasMoved(cw)){
-					
-					printf("setGREEN(%d) off\n",cntr);
-					led.setGREEN(cntr, 0);
+						led.setGREEN(cntr, 0);
 					
 					cntr += cw ?-1:1;
 					if (cntr> 23) cntr = 23;
 					else if (cntr < 0) cntr = 0;
-					
 		//			printf("L Moved %s %d ", cw? "CW": "CCW", cntr);
-					printf("setGREEN(%d) on\n",cntr);
 					led.setGREEN(cntr, 0x7f);
 				}
 	//			printf("\n");
@@ -174,15 +182,28 @@ int main(int argc, const char * argv[]) {
 	
 			if(status1 != 0){
 				bool cw = false;
+				static int cntr1 = 0;
+	
 				if(duppa1.wasPressed())
-					printf("R Pressed ");
+					printf("R Pressed \n");
 				
 				if(duppa1.wasClicked())
-					printf("R Clicked ");
+					printf("R Clicked \n");
 				
-				if(duppa1.wasMoved(cw))
-					printf("R Moved %s ", cw? "CW": "CCW");
-				printf("\n");
+				if(duppa1.wasMoved(cw)){
+					//				printf("R Moved %s ", cw? "CW": "CCW");
+					
+					
+					led1.setBLUE(cntr1, 0);
+					
+					cntr1 += cw ?-1:1;
+					if (cntr1> 23) cntr1 = 23;
+					else if (cntr1 < 0) cntr1 = 0;
+					//			printf("L Moved %s %d ", cw? "CW": "CCW", cntr);
+					led1.setBLUE(cntr1, 0x7f);
+					
+				}
+	//			printf("\n");
 			}
 
 			usleep(2000);

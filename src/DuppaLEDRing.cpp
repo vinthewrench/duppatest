@@ -75,6 +75,10 @@ bool DuppaLEDRing::begin(uint8_t deviceAddress,  int &error){
 }
 
 void DuppaLEDRing::stop(){
+	
+	clearAll();
+	GlobalCurrent(0);
+	
 	_isSetup = false;
 	_i2cPort.stop();
 	
