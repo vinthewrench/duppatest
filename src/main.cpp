@@ -80,30 +80,30 @@ int main(int argc, const char * argv[]) {
 
 		if(!led.SpreadSpectrum(0b0010110))
 			throw Exception("failed to SpreadSpectrum LED");
-
-		if(!led.GlobalCurrent(0xFF))
-			throw Exception("failed to GlobalCurrent LED");
-
+//
+//		if(!led.GlobalCurrent(0xFF))
+//			throw Exception("failed to GlobalCurrent LED");
+//
 		if(!led.SetScaling(0xFF))
 			throw Exception("failed to SetScaling LED");
 		
-		if(!led.PWM_MODE())
-			throw Exception("failed to PWM_MODE LED");
- 
+//		if(!led.PWM_MODE())
+//			throw Exception("failed to PWM_MODE LED");
+//
 		
 		led.GlobalCurrent(010);
 		led.PWM_MODE();
-		 
-		for (int i = 0; i < 24; i++) {
-			 led.setGREEN(i, 0xff);
-			 usleep(10 * 1000);
-		  }
-
-			for (int i = 0; i < 24; i++) {
-			 led.setGREEN(i, 0);
-			 usleep(10 * 1000);
-		  }
-
+//
+//		for (int i = 0; i < 24; i++) {
+//			 led.setGREEN(i, 0xff);
+//			 usleep(10 * 1000);
+//		  }
+//
+//			for (int i = 0; i < 24; i++) {
+//			 led.setGREEN(i, 0);
+//			 usleep(10 * 1000);
+//		  }
+//
 //		for (int i = 0; i < 24; i++) {
 //			 led1.setGREEN(i, 0xff);
 //			 usleep(30 * 1000);
