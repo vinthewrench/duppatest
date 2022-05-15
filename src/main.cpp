@@ -179,7 +179,7 @@ int main(int argc, const char * argv[]) {
 					
 					
 					//			printf("L Moved %s %d ", cw? "CW": "CCW", cntr);
-					led.setGREEN(cntr, cw?0x0:7f);
+					led.setGREEN(cntr, cw?0x0:0x7f);
 				}
 				//			printf("\n");
 			}
