@@ -31,7 +31,7 @@ int main(int argc, const char * argv[]) {
 		
 		uint8_t config = DuppaEncoder::INT_DATA
 		| DuppaEncoder::WRAP_DISABLE
-		| DuppaEncoder::DIRE_LEFT
+		| DuppaEncoder::DIRE_RIGHT
 		| DuppaEncoder::IPUP_ENABLE
 		| DuppaEncoder::RMOD_X1
 		| DuppaEncoder::RGB_ENCODER;
