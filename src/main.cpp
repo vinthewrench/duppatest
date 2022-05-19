@@ -135,7 +135,7 @@ int main(int argc, const char * argv[]) {
 				
 				if(duppa.wasMoved(cw)){
 					//			led.setGREEN(23-cntr, 0);
-					led.setGREEN(cntr, cw?0:128);
+					led.setGREEN(cntr, cw?128:0);
 					
 					cntr += cw ?1:-1;
 					if (cntr> 23) cntr = 23;
