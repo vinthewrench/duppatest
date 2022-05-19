@@ -82,22 +82,22 @@ int main(int argc, const char * argv[]) {
 		
 		
 		for (int i = 0; i < 24; i++) {
-			led.setGREEN(23-i, 0xff);
+			led.setGREEN(i, 0xff);
 			usleep(20 * 1000);
 		}
 		
 		for (int i = 0; i < 24; i++) {
-			led.setGREEN(23- i, 0);
+			led.setGREEN(i, 0);
 			usleep(20 * 1000);
 		}
 		//
 		for (int i = 0; i < 24; i++) {
-			led1.setBLUE(23 - i, 0xff);
+			led1.setBLUE(i, 0xff);
 			usleep(20 * 1000);
 		}
 		
 		for (int i = 0; i < 24; i++) {
-			led1.setBLUE(23 - i, 0);
+			led1.setBLUE( i, 0);
 			usleep(20 * 1000);
 		}
 		
@@ -135,7 +135,7 @@ int main(int argc, const char * argv[]) {
 				
 				if(duppa.wasMoved(cw)){
 					//			led.setGREEN(23-cntr, 0);
-					led.setGREEN(23-cntr, cw?0:128);
+					led.setGREEN(cntr, cw?0:128);
 					
 					cntr += cw ?-1:1;
 					if (cntr> 23) cntr = 23;
@@ -158,9 +158,9 @@ int main(int argc, const char * argv[]) {
 				if(duppa1.wasMoved(cw)){
 					//				printf("R Moved %s ", cw? "CW": "CCW");
 					
-					led1.setBLUE( 23- (cntr1 % 23), 0);
+					led1.setBLUE(  (cntr1 % 23), 0);
 					cntr1 += cw ?-1:1;
-					led1.setBLUE(23- (cntr1 % 23) , 0x7f);
+					led1.setBLUE((cntr1 % 23) , 0x7f);
 					printf("R Moved %s %d \n", cw? "CW": "CCW", cntr1);
 					
 					
