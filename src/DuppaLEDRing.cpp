@@ -197,8 +197,8 @@ bool  DuppaLEDRing::selectBank(uint8_t b){
 uint8_t DuppaLEDRing::ledFromOffset(uint8_t led_n){
 	
 	led_n += _ledOffset;
-	if(_flipOffset) led_n = 23-led_n;
 	led_n = led_n % 23;
+	if(_flipOffset) led_n = 23-led_n;
 	
 	return led_n;
 }
