@@ -66,7 +66,8 @@ bool DuppaLEDRing::begin(uint8_t deviceAddress,  int &error){
 	if( _i2cPort.begin(deviceAddress, error)
 		&& setConfig(0x01) //Normal operation
 		) {
-		
+		_ledOffset = 0;
+		_flipOffset = false;
 		_isSetup = true;
 	}
 	
@@ -195,6 +196,7 @@ bool  DuppaLEDRing::selectBank(uint8_t b){
 
 uint8_t DuppaLEDRing::ledFromOffset(uint8_t led_n){
 	
+	led_n += _ledOffset;
 	if(_flipOffset) led_n = 23-led_n;
 	
 	return led_n;
