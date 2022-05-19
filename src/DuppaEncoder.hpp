@@ -49,7 +49,7 @@ public:
 		RMAX = 0x20,
 		RMIN = 0x40,
 		INT_2 = 0x80,
- 	};
+	};
 
 	DuppaEncoder();
 	~DuppaEncoder();
@@ -67,7 +67,7 @@ public:
 	
 	bool wasClicked();	// pressed and let go
 	bool wasPressed();	// still down
-	bool wasMoved(bool &movedRight);
+	bool wasMoved(bool &cw);
 	
 	uint8_t	getDevAddr();
   

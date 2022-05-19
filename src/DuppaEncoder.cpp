@@ -91,9 +91,9 @@ bool DuppaEncoder::begin(uint8_t deviceAddress, uint16_t conf,  int &error){
 				_clockstrech = 1;
 			
 			_isSetup = true;
- 		}
- 	}
- 	return _isSetup;
+		}
+	}
+	return _isSetup;
 }
 
 void DuppaEncoder::stop(){
@@ -154,10 +154,10 @@ bool DuppaEncoder::wasPressed() {
 	return  (_lastStatus & PUSHP) != 0;
 }
 
-bool DuppaEncoder::wasMoved(bool &movedRight) {
+bool DuppaEncoder::wasMoved(bool &cw) {
 	
 	if( (_lastStatus & (RINC | RDEC)) != 0){
-		movedRight = (_lastStatus &  RINC) != 0;
+		cw = (_lastStatus &  RDEC) != 0;
 		return true;
 	}
 	
