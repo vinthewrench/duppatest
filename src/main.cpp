@@ -137,7 +137,7 @@ int main(int argc, const char * argv[]) {
 					//			led.setGREEN(23-cntr, 0);
 					led.setGREEN(cntr, cw?0:128);
 					
-					cntr += cw ?-1:1;
+					cntr += cw ?1:-11;
 					if (cntr> 23) cntr = 23;
 					else if (cntr < 0) cntr = 0;
 					printf("L Moved %s %d \n", cw? "CW": "CCW", cntr);
@@ -159,7 +159,7 @@ int main(int argc, const char * argv[]) {
 					//				printf("R Moved %s ", cw? "CW": "CCW");
 					
 					led1.setBLUE(  (cntr1 % 23), 0);
-					cntr1 += cw ?-1:1;
+					cntr1 += cw ?1:-1;
 					led1.setBLUE((cntr1 % 23) , 0x7f);
 					printf("R Moved %s %d \n", cw? "CW": "CCW", cntr1);
 					
