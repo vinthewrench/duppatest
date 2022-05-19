@@ -35,7 +35,7 @@ int main(int argc, const char * argv[]) {
 		| DuppaEncoder::IPUP_ENABLE
 		| DuppaEncoder::RMOD_X1
 		| DuppaEncoder::RGB_ENCODER;
-		
+
 		
 		//		INT_DATA= The register are considered integer.
 		//			WRAP_DISABLE= The WRAP option is disabled
@@ -66,78 +66,39 @@ int main(int argc, const char * argv[]) {
 		if(!led1.reset())
 			throw Exception("failed to reset LED 1");
 		
-		if(!led.clearAll())
-			throw Exception("failed to clearAll LED ");
 		
-		if(!led1.clearAll())
-			throw Exception("failed to clearAll LED 1");
-		
-		
-#if 1
 		led.setConfig(0x01);
 		led.SetScaling(0xFF);
 		led.GlobalCurrent(010);
-		led.PWM_MODE();
+		led.clearAll();
 		
 		led1.setConfig(0x01);
 		led1.SetScaling(0xFF);
 		led1.GlobalCurrent(010);
-		led1.PWM_MODE();
+		led1.clearAll();
 		
-#endif
-		led.setConfig(0x01);
 		
-		if(!led.PWMFrequencyEnable(1))
-			throw Exception("failed to PWMFrequencyEnable LED");
+		for (int i = 0; i < 24; i++) {
+			led.setGREEN(23-i, 0xff);
+			usleep(20 * 1000);
+		}
 		
-		if(!led.SpreadSpectrum(0b0010110))
-			throw Exception("failed to SpreadSpectrum LED");
+		for (int i = 0; i < 24; i++) {
+			led.setGREEN(23- i, 0);
+			usleep(20 * 1000);
+		}
 		//
-		if(!led.GlobalCurrent(0xFF))
-			throw Exception("failed to GlobalCurrent LED");
+		for (int i = 0; i < 24; i++) {
+			led1.setBLUE(23 - i, 0xff);
+			usleep(20 * 1000);
+		}
 		
-		if(!led.SetScaling(0xFF))
-			throw Exception("failed to SetScaling LED");
+		for (int i = 0; i < 24; i++) {
+			led1.setBLUE(23 - i, 0);
+			usleep(20 * 1000);
+		}
 		
-		//		if(!led.PWM_MODE())
-		//			throw Exception("failed to PWM_MODE LED");
-		//
-		
-		led.GlobalCurrent(010);
-		led.PWM_MODE();
-		
-				for (int i = 0; i < 24; i++) {
-					 led.setGREEN(23-i, 0xff);
-					 usleep(20 * 1000);
-				  }
-		
-					for (int i = 0; i < 24; i++) {
-					 led.setGREEN(23- i, 0);
-					 usleep(20 * 1000);
-				  }
-		//
-				for (int i = 0; i < 24; i++) {
-					 led1.setBLUE(23 - i, 0xff);
-					 usleep(20 * 1000);
-				  }
-		
-				for (int i = 0; i < 24; i++) {
-					 led1.setBLUE(23 - i, 0);
-					 usleep(20 * 1000);
-				  }
-		
-		
-		//		if(!led.clearAll())
-		//			throw Exception("failed to clearAll LED ");
-		//
-		//		if(!led1.clearAll())
-		//			throw Exception("failed to clearAll LED 1");
-		//
-		//		if(!led.GlobalCurrent(0xFF))
-		//			throw Exception("failed to GlobalCurrent LED");
-		////duppa.reset();
-		
-		
+			
 		printf("reading status\n");
 		
 		if(!duppa.setColor(0, 255, 0))
@@ -170,13 +131,13 @@ int main(int argc, const char * argv[]) {
 				}
 				
 				if(duppa.wasMoved(cw)){
-		//			led.setGREEN(23-cntr, 0);
+					//			led.setGREEN(23-cntr, 0);
 					led.setGREEN(23-cntr, cw?0:128);
-	
+					
 					cntr += cw ?-1:1;
 					if (cntr> 23) cntr = 23;
 					else if (cntr < 0) cntr = 0;
-				 		printf("L Moved %s %d \n", cw? "CW": "CCW", cntr);
+					printf("L Moved %s %d \n", cw? "CW": "CCW", cntr);
 				}
 				//			printf("\n");
 			}
@@ -198,10 +159,9 @@ int main(int argc, const char * argv[]) {
 					cntr1 += cw ?-1:1;
 					led1.setBLUE(23- (cntr1 % 23) , 0x7f);
 					printf("R Moved %s %d \n", cw? "CW": "CCW", cntr1);
-
+					
 					
 				}
-				//			printf("\n");
 			}
 			
 			usleep(2000);
