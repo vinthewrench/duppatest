@@ -60,6 +60,9 @@ int main(int argc, const char * argv[]) {
 		if(!led1.begin(0x60, errnum))
 			throw Exception("failed to setup LED  1  ", errnum);
 		
+		led.setOffset(1, true);
+		led1.setOffset(0, true);
+	
 		if(!led.reset())
 			throw Exception("failed to reset LED ");
 		
