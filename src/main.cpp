@@ -5,13 +5,13 @@
 //  Created by Vincent Moscaritolo on 5/14/22.
 //
 
+
+
 #include <iostream>
 #include <stdlib.h>
 #include <stdint.h>
 #include <stdbool.h>
 #include <string.h>
-
-#include "GPIO.hpp"
 
 #include "CommonDefs.hpp"
 
@@ -20,6 +20,25 @@
 
 #include <unistd.h>
 
+
+#define USE_GPIO_INTERRUPT 1
+
+
+#if USE_GPIO_INTERRUPT
+
+#include "GPIO.hpp"
+
+/* this test uses GPIO interrupts
+ 
+ you will need to install the gpiod and the dev libraries befor building
+ 
+ sudo apt-get install gpiod libgpiod-dev
+ 
+ */
+
+#endif
+
+
 int main(int argc, const char * argv[]) {
 	
 	DuppaEncoder knob1;
@@ -27,8 +46,10 @@ int main(int argc, const char * argv[]) {
 	DuppaLEDRing led1;
 	DuppaLEDRing led2;
 	
+#if USE_GPIO_INTERRUPT
 	GPIO			gpio;
-
+#endif
+	
 	try {
 		
 		bool quit = false;
