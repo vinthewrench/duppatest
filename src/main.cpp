@@ -79,20 +79,11 @@ int main(int argc, const char * argv[]) {
 		goto cleanup;
 	}
 	
-	struct gpiod_line_request_config gpio_config;
-	memset(&gpio_config, 0, sizeof(gpio_config));
-	gpio_config.consumer = GPIOD_TEST_CONSUMER;
-	gpio_config.request_type = GPIOD_LINE_REQUEST_DIRECTION_INPUT;
-	gpio_config.flags = GPIOD_LINE_REQUEST_FLAG_BIAS_PULL_UP;
-
- 	err = gpiod_line_request(_line, &gpio_config, 0);
-	if ( err ){
-		printf("Error gpiod_line_request %d: %s \n",  gpioLine, strerror(errno));
-		goto cleanup;
-	}
- 
-	err =  gpiod_line_request_falling_edge_events(_line, GPIOD_TEST_CONSUMER);
-	if ( err ){
+	// setup the l;ine for input and select pull up resistor
+	err =  gpiod_line_request_falling_edge_events_flags(_line,
+							GPIOD_TEST_CONSUMER,
+							GPIOD_LINE_REQUEST_FLAG_BIAS_PULL_UP);
+if ( err ){
 		printf("Error gpiod_line_request_falling_edge_events %d: %s \n",  gpioLine, strerror(errno));
 		goto cleanup;
 	}
@@ -216,7 +207,6 @@ int main(int argc, const char * argv[]) {
 					printf("Error gpiod_line_event_wait \n");
 					goto cleanup;
 				}
-
 				// gpiod_line_event_wait only blocks until there's an event or a timeout
 				// occurs, it does not read the event.
 				// call gpiod_line_event_read  to consume the event.
