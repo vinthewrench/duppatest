@@ -204,27 +204,28 @@ int main(int argc, const char * argv[]) {
 #if USE_GPIO_INTERRUPT
 				struct timespec timeout;
 				// Timeout of 60 seconds, pass in NULL to wait forever
-				timeout.tv_sec = 60;
+				timeout.tv_sec = 10;
 				timeout.tv_nsec = 0;
-				
 				gpiod_line_event evt;
 				
-				// return 0 if wait timed out, -1 if an error occurred, 1 if an event occurred.
-				printf("wait for event:  ");
+				// gpiod_line_event_wait return 0 if wait timed out,
+				// -1 if an error occurred,
+				//  1 if an event occurred.
 				err = gpiod_line_event_wait(_line, &timeout);
 				if(err == -1){
 					printf("Error gpiod_line_event_wait \n");
 					goto cleanup;
- 				}
-				// gpiod_line_event_wait only blocks until there's an event or a timeout
-				// occurs, it does not read the event. To do that, you need to call
-				//  gpiod_line_event_read.
-				if (err == 1) {
-						  gpiod_line_event_read(_line, &evt);
-						printf("%d \n", evt.event_type);
 				}
-	 
-	
+
+				// gpiod_line_event_wait only blocks until there's an event or a timeout
+				// occurs, it does not read the event.
+				// call gpiod_line_event_read  to consume the event.
+				else if (err == 1) {
+					gpiod_line_event_read(_line, &evt);
+				}
+				else if (err == 0){
+					printf("timeout\n");
+				}
 #else
 				usleep(2000);
 #endif
