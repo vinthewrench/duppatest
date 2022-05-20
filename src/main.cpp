@@ -11,7 +11,10 @@
 #include <stdbool.h>
 #include <string.h>
 
+#include "GPIO.hpp"
+
 #include "CommonDefs.hpp"
+
 #include "DuppaEncoder.hpp"
 #include "DuppaLEDRing.hpp"
 
@@ -19,10 +22,12 @@
 
 int main(int argc, const char * argv[]) {
 	
-	DuppaEncoder duppa1;
-	DuppaEncoder duppa2;
+	DuppaEncoder knob1;
+	DuppaEncoder knob2;
 	DuppaLEDRing led1;
 	DuppaLEDRing led2;
+	
+	GPIO			gpio;
 
 	try {
 		
@@ -35,7 +40,7 @@ int main(int argc, const char * argv[]) {
 		| DuppaEncoder::IPUP_ENABLE
 		| DuppaEncoder::RMOD_X1
 		| DuppaEncoder::RGB_ENCODER;
-
+		
 		
 		//		INT_DATA= The register are considered integer.
 		//			WRAP_DISABLE= The WRAP option is disabled
@@ -45,13 +50,13 @@ int main(int argc, const char * argv[]) {
 		//			RGB_ENCODER= type of encoder is RGB, change to STD_ENCODER in case you are using a normal rotary encoder.
 		
 		// Open device
-		if(!duppa1.begin(0x41, config, errnum))
-			throw Exception("failed to setup Duppa1 ", errnum);
-
+		if(!knob1.begin(0x41, config, errnum))
+			throw Exception("failed to setup knob1 ", errnum);
+		
 		// Open device
-		if(!duppa2.begin(0x40, config, errnum))
+		if(!knob2.begin(0x40, config, errnum))
 			throw Exception("failed to setup Duppa ", errnum);
-  
+		
 		// Open device
 		if(!led2.begin(0x61, errnum))
 			throw Exception("failed to setup LED   ", errnum);
@@ -65,14 +70,14 @@ int main(int argc, const char * argv[]) {
 		// and offset one of them
 		led2.setOffset(2, true);
 		led1.setOffset(0, true);
-	
-//		if(!led2.reset())
-//			throw Exception("failed to reset LED ");
-//
-//		if(!led1.reset())
-//			throw Exception("failed to reset LED 1");
-//
-	 
+		
+		//		if(!led2.reset())
+		//			throw Exception("failed to reset LED ");
+		//
+		//		if(!led1.reset())
+		//			throw Exception("failed to reset LED 1");
+		//
+		
 		
 		// run one cycle of LEDS  on and off
 		for (int i = 0; i < 24; i++) {
@@ -84,7 +89,7 @@ int main(int argc, const char * argv[]) {
 			led1.setBLUE( i, 0);
 			usleep(20 * 1000);
 		}
-
+		
 		
 		for (int i = 0; i < 24; i++) {
 			led2.setGREEN(i, 0xff);
@@ -95,81 +100,97 @@ int main(int argc, const char * argv[]) {
 			led2.setGREEN(i, 0);
 			usleep(20 * 1000);
 		}
-			
-			
+		
+		
 		printf("reading status\n");
 		
 		// set the knob colors
-		if(!duppa2.setColor(0, 255, 0))
+		if(!knob2.setColor(0, 255, 0))
 			throw Exception("failed to setColor Duppa");
 		
-		if(!duppa1.setColor(0, 0, 255))
-			throw Exception("failed to setColor Duppa1 ");
-	
+		if(!knob1.setColor(0, 0, 255))
+			throw Exception("failed to setColor knob1 ");
+		
 		// loop and look for changes
 		
+		uint8_t status2 = 0;
+		uint8_t status1 = 0;
+
 		while(!quit){
-			uint8_t status;
-			uint8_t status1;
-			
-			if(!duppa2.updateStatus(status)
-				||! duppa1.updateStatus(status1) ){
-				printf("readStatus failed\n");
-				quit = true;
-				continue;
-			}
-			
-			if(status != 0){
+	 
+	 		// loop until status changes
+			for(;;) {
 				
-				static int cntr = 0;
+				// get status from knobs
+				if(! (knob2.updateStatus(status2)
+						&& knob1.updateStatus(status1)))
+					throw Exception("failed to setColor knob1 ");
+	 
+				// if any status bit are set process them
+				if( (status1 | status2) != 0) break;
 				
-				bool cw = false;
-				if(duppa2.wasPressed())
-					printf("L Pressed \n");
-				
-				if(duppa2.wasClicked()){
-					quit = true;
-				}
-				
-				if(duppa2.wasMoved(cw)){
-					//			led2.setGREEN(23-cntr, 0);
-					led2.setGREEN(cntr, cw?128:0);
-					
-					cntr += cw ?1:-1;
-					if (cntr> 23) cntr = 23;
-					else if (cntr < 0) cntr = 0;
-					printf("L Moved %s %d \n", cw? "CW": "CCW", cntr);
-				}
-				//			printf("\n");
-			}
+				// or take a nap
+ 				usleep(2000);
+ 			}
+	 
+	
+			// KNOB 1 is blue.
+			// we will follow the turn with one blue LED as it moves.
+			// think of it as a radio tuning control knob.
 			
 			if(status1 != 0){
 				bool cw = false;
 				static uint8_t cntr1 = 0;
 				
-				if(duppa1.wasPressed())
-					printf("R Pressed \n");
+				if(knob1.wasPressed())
+					printf("Knob 1 Pressed \n");
 				
-				if(duppa1.wasClicked())
-					printf("R Clicked \n");
+				if(knob1.wasClicked())
+					printf("Knob1 Clicked \n");
 				
-				if(duppa1.wasMoved(cw)){
+				if(knob1.wasMoved(cw)){
 					//				printf("R Moved %s ", cw? "CW": "CCW");
 					
 					led1.setBLUE(  (cntr1 % 23), 0);
 					cntr1 += cw ?1:-1;
 					led1.setBLUE((cntr1 % 23) , 0x7f);
-					printf("R Moved %s %d \n", cw? "CW": "CCW", cntr1);
-					
-					
+					printf("Knob1 moved %s %d \n", cw? "CW": "CCW", cntr1);
 				}
 			}
 			
-			usleep(2000);
- 		}
- 
-		duppa2.stop();
-		duppa1.stop();
+			
+			// KNOB 2 is green.
+			// we will track the LED with a trail as it increases..
+			// think of it as a volume control knob.
+			
+			if(status2 != 0){
+				
+				static int cntr = 0;
+				
+				bool cw = false;
+				if(knob2.wasPressed())
+					printf("Knob2 Pressed \n");
+				
+				if(knob2.wasClicked()){
+					printf("Knob2 Clicked - Quit test \n");
+					quit = true;
+				}
+				
+				if(knob2.wasMoved(cw)){
+					led2.setGREEN(cntr, cw?128:0);
+					
+					cntr += cw ?1:-1;
+					if (cntr> 23) cntr = 23;
+					else if (cntr < 0) cntr = 0;
+					printf("Knob2 moved %s %d \n", cw? "CW": "CCW", cntr);
+				}
+				//			printf("\n");
+			}
+			
+		}
+		
+		knob2.stop();
+		knob1.stop();
 		led2.stop();
 		led1.stop();
 		

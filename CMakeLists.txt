@@ -9,10 +9,11 @@ project(duppatest)
 
 set(SOURCES
 	src/main.cpp
-	src/ErrorMgr.cpp
-	src/I2C.cpp
 	src/DuppaEncoder.cpp
 	src/DuppaLEDRing.cpp
+	src/GPIO.cpp
+	src/ErrorMgr.cpp
+	src/I2C.cpp
 	)
 
  
@@ -29,10 +30,7 @@ set_target_properties(duppatest PROPERTIES
 			)
 
 
-target_link_libraries(duppatest
-	 PRIVATE
-   	${EXTRA_LIBS}
- 	)
+target_link_libraries(duppatest  PRIVATE  gpiod ${EXTRA_LIBS} )
 
 target_include_directories(duppatest
 	PRIVATE
