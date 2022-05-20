@@ -26,7 +26,12 @@
 
 #if USE_GPIO_INTERRUPT
 
-#include "GPIO.hpp"
+#if defined(__APPLE__)
+// used for cross compile on osx
+#include "macos_gpiod.h"
+#else
+#include <gpiod.h>
+#endif
 
 /* this test uses GPIO interrupts
  
@@ -47,9 +52,41 @@ int main(int argc, const char * argv[]) {
 	DuppaLEDRing led2;
 	
 #if USE_GPIO_INTERRUPT
-	GPIO			gpio;
-#endif
 	
+	
+	struct gpiod_chip* 		_chip = NULL;
+	struct gpiod_line*  		_line = NULL;
+
+ // setup GPIO27 as connected to the duppa INT line
+	
+	const char* gpioPath = "/dev/gpiochip0";
+	constexpr uint gpioLine	= 27;
+	int ret = 0;
+	
+	printf("setup GPIO lines\n");
+	_chip = gpiod_chip_open(gpioPath);
+	if(!_chip) {
+		printf("Error open GPIO chip(\"%s\") : %s \n",gpioPath,strerror(errno));
+	 	goto cleanup;
+	}
+ 
+	// get refs to the lines
+	_line =  gpiod_chip_get_line(_chip, gpioLine);
+	if(!_line){
+		printf("Error gpiod_chip_get_line %d: %s \n",  gpioLine, strerror(errno));
+		goto cleanup;
+	}
+	
+	
+	ret =  gpiod_line_request_falling_edge_events(_line, "DUPPA-Encoder-Test");
+	if ( ret ){
+		printf("Error gpiod_line_request_falling_edge_events\n");
+		goto cleanup;
+	}
+ 
+
+#endif
+
 	try {
 		
 		bool quit = false;
@@ -69,6 +106,7 @@ int main(int argc, const char * argv[]) {
 		//			IPUP_ENABLE= INT pin have the pull-up enabled2.
 		//			RMOD_X1= Encoder configured as X1.
 		//			RGB_ENCODER= type of encoder is RGB, change to STD_ENCODER in case you are using a normal rotary encoder.
+	
 		
 		// Open device
 		if(!knob1.begin(0x41, config, errnum))
@@ -215,6 +253,8 @@ int main(int argc, const char * argv[]) {
 		led2.stop();
 		led1.stop();
 		
+
+		
 	}
 	
 	catch ( const Exception& e)  {
@@ -230,7 +270,15 @@ int main(int argc, const char * argv[]) {
 		printf("EXCEPTION: %s ",e.what() );
 	}
 	
+#if USE_GPIO_INTERRUPT
+cleanup:
+	if(_line)
+		gpiod_line_release (_line);
 	
+	if(_chip)
+		gpiod_chip_close(_chip);
+ #endif
+
 	
 	return 0;
 }

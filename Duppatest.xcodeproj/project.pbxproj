@@ -12,7 +12,6 @@
 		2E82106128300144003D074C /* I2C.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2E82105E28300143003D074C /* I2C.cpp */; };
 		2E821064283001E6003D074C /* DuppaEncoder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2E821062283001E6003D074C /* DuppaEncoder.cpp */; };
 		2E821069283037A6003D074C /* DuppaLEDRing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2E821067283037A6003D074C /* DuppaLEDRing.cpp */; };
-		2E8210DE2837EF94003D074C /* GPIO.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2E8210DB2837EF94003D074C /* GPIO.cpp */; };
 		2E8210DF2837EF94003D074C /* macos_gpiod.c in Sources */ = {isa = PBXBuildFile; fileRef = 2E8210DC2837EF94003D074C /* macos_gpiod.c */; };
 /* End PBXBuildFile section */
 
@@ -153,7 +152,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				2E8210DF2837EF94003D074C /* macos_gpiod.c in Sources */,
-				2E8210DE2837EF94003D074C /* GPIO.cpp in Sources */,
 				2E821069283037A6003D074C /* DuppaLEDRing.cpp in Sources */,
 				2E82106128300144003D074C /* I2C.cpp in Sources */,
 				2E821056283000A3003D074C /* main.cpp in Sources */,

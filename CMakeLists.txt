@@ -11,7 +11,6 @@ set(SOURCES
 	src/main.cpp
 	src/DuppaEncoder.cpp
 	src/DuppaLEDRing.cpp
-	src/GPIO.cpp
 	src/ErrorMgr.cpp
 	src/I2C.cpp
 	)
