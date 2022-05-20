@@ -130,15 +130,7 @@ int main(int argc, const char * argv[]) {
 		// and offset one of them
 		led2.setOffset(2, true);
 		led1.setOffset(0, true);
-		
-		//		if(!led2.reset())
-		//			throw Exception("failed to reset LED ");
-		//
-		//		if(!led1.reset())
-		//			throw Exception("failed to reset LED 1");
-		//
-		
-		
+			
 		// run one cycle of LEDS  on and off
 		for (int i = 0; i < 24; i++) {
 			led1.setBLUE(i, 0xff);
@@ -198,12 +190,15 @@ int main(int argc, const char * argv[]) {
 				timeout.tv_nsec = 0;
 				
 				// return 0 if wait timed out, -1 if an error occurred, 1 if an event occurred.
+				printf("wait for even -- ");
 				err = gpiod_line_event_wait(_line, &timeout);
 				if(err == -1){
 					printf("Error gpiod_line_event_wait \n");
 					goto cleanup;
  				}
 	 
+				printf("%d \n", err);
+	
 #else
 				usleep(2000);
 #endif
