@@ -107,14 +107,22 @@ int main(int argc, const char * argv[]) {
 		//			IPUP_ENABLE= INT pin have the pull-up enabled2.
 		//			RMOD_X1= Encoder configured as X1.
 		//			RGB_ENCODER= type of encoder is RGB, change to STD_ENCODER in case you are using a normal rotary encoder.
-	
+		
+		
+		uint8_t interrupt_config =
+			DuppaEncoder::PUSHR
+		| 	DuppaEncoder::PUSHP
+		| 	DuppaEncoder::RINC
+		| 	DuppaEncoder::RDEC ;
+
+		
 		
 		// Open device
-		if(!knob1.begin(0x41, config, errnum))
+		if(!knob1.begin(0x41, config,interrupt_config, errnum))
 			throw Exception("failed to setup knob1 ", errnum);
 		
 		// Open device
-		if(!knob2.begin(0x40, config, errnum))
+		if(!knob2.begin(0x40, config, interrupt_config, errnum))
 			throw Exception("failed to setup Duppa ", errnum);
 		
 		// Open device
@@ -190,7 +198,7 @@ int main(int argc, const char * argv[]) {
 				timeout.tv_nsec = 0;
 				
 				// return 0 if wait timed out, -1 if an error occurred, 1 if an event occurred.
-				printf("wait for even -- ");
+				printf("wait for event:  ");
 				err = gpiod_line_event_wait(_line, &timeout);
 				if(err == -1){
 					printf("Error gpiod_line_event_wait \n");

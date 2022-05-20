@@ -66,13 +66,13 @@ DuppaEncoder::~DuppaEncoder(){
 	stop();
 }
 
-bool DuppaEncoder::begin(uint8_t deviceAddress, uint16_t conf){
+bool DuppaEncoder::begin(uint8_t deviceAddress, uint16_t conf, uint16_t intConf){
 	int error = 0;
 	
 	return begin(deviceAddress,  conf, error);
 }
 
-bool DuppaEncoder::begin(uint8_t deviceAddress, uint16_t conf,  int &error){
+bool DuppaEncoder::begin(uint8_t deviceAddress, uint16_t conf, uint16_t intConf, int &error){
 	
 	if( _i2cPort.begin(deviceAddress, error)
 		&& _i2cPort.writeByte(REG_GCONF,  (uint8_t) 0x80)   // reset the device
