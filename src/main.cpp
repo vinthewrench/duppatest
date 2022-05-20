@@ -51,6 +51,8 @@ int main(int argc, const char * argv[]) {
 	DuppaLEDRing led1;
 	DuppaLEDRing led2;
 	
+	int err = 0;
+
 #if USE_GPIO_INTERRUPT
 	
 	
@@ -61,7 +63,6 @@ int main(int argc, const char * argv[]) {
 	
 	const char* gpioPath = "/dev/gpiochip0";
 	constexpr uint gpioLine	= 27;
-	int ret = 0;
 	
 	printf("setup GPIO lines\n");
 	_chip = gpiod_chip_open(gpioPath);
@@ -78,9 +79,9 @@ int main(int argc, const char * argv[]) {
 	}
 	
 	
-	ret =  gpiod_line_request_falling_edge_events(_line, "DUPPA-Encoder-Test");
-	if ( ret ){
-		printf("Error gpiod_line_request_falling_edge_events\n");
+	err =  gpiod_line_request_falling_edge_events(_line, "DUPPA-Encoder-Test");
+	if ( err ){
+		printf("Error gpiod_line_request_falling_edge_events %d: %s \n",  gpioLine, strerror(errno));
 		goto cleanup;
 	}
  
@@ -187,9 +188,25 @@ int main(int argc, const char * argv[]) {
 	 
 				// if any status bit are set process them
 				if( (status1 | status2) != 0) break;
-				
+	
 				// or take a nap
- 				usleep(2000);
+
+#if USE_GPIO_INTERRUPT
+				struct timespec timeout;
+				// Timeout of 60 seconds, pass in NULL to wait forever
+				timeout.tv_sec = 60;
+				timeout.tv_nsec = 0;
+				
+				// return 0 if wait timed out, -1 if an error occurred, 1 if an event occurred.
+				err = gpiod_line_event_wait(_line, &timeout);
+				if(err == -1){
+					printf("Error gpiod_line_event_wait \n");
+					goto cleanup;
+ 				}
+	 
+#else
+				usleep(2000);
+#endif
  			}
 	 
 	
