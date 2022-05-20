@@ -207,6 +207,8 @@ int main(int argc, const char * argv[]) {
 				timeout.tv_sec = 60;
 				timeout.tv_nsec = 0;
 				
+				gpiod_line_event evt;
+				
 				// return 0 if wait timed out, -1 if an error occurred, 1 if an event occurred.
 				printf("wait for event:  ");
 				err = gpiod_line_event_wait(_line, &timeout);
@@ -214,8 +216,14 @@ int main(int argc, const char * argv[]) {
 					printf("Error gpiod_line_event_wait \n");
 					goto cleanup;
  				}
+				// gpiod_line_event_wait only blocks until there's an event or a timeout
+				// occurs, it does not read the event. To do that, you need to call
+				//  gpiod_line_event_read.
+				if (err == 1) {
+						  gpiod_line_event_read(_line, &evt);
+						printf("%d \n", evt.event_type);
+				}
 	 
-				printf("%d \n", err);
 	
 #else
 				usleep(2000);
