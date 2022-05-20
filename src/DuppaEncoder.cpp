@@ -69,7 +69,7 @@ DuppaEncoder::~DuppaEncoder(){
 bool DuppaEncoder::begin(uint8_t deviceAddress, uint16_t conf, uint16_t intConf){
 	int error = 0;
 	
-	return begin(deviceAddress,  conf, error);
+	return begin(deviceAddress,  conf,intConf,  error);
 }
 
 bool DuppaEncoder::begin(uint8_t deviceAddress, uint16_t conf, uint16_t intConf, int &error){
