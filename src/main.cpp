@@ -55,7 +55,8 @@ int main(int argc, const char * argv[]) {
 
 #if USE_GPIO_INTERRUPT
 	
-	
+#define GPIOD_TEST_CONSUMER "gpiod-test"
+
 	struct gpiod_chip* 		_chip = NULL;
 	struct gpiod_line*  		_line = NULL;
 
@@ -78,8 +79,19 @@ int main(int argc, const char * argv[]) {
 		goto cleanup;
 	}
 	
-	
-	err =  gpiod_line_request_falling_edge_events(_line, "DUPPA-Encoder-Test");
+	struct gpiod_line_request_config gpio_config;
+	memset(&gpio_config, 0, sizeof(gpio_config));
+	gpio_config.consumer = GPIOD_TEST_CONSUMER;
+	gpio_config.request_type = GPIOD_LINE_REQUEST_DIRECTION_INPUT;
+	gpio_config.flags = GPIOD_LINE_REQUEST_FLAG_BIAS_PULL_UP;
+
+ 	err = gpiod_line_request(_line, &gpio_config, 0);
+	if ( err ){
+		printf("Error gpiod_line_request %d: %s \n",  gpioLine, strerror(errno));
+		goto cleanup;
+	}
+ 
+	err =  gpiod_line_request_falling_edge_events(_line, GPIOD_TEST_CONSUMER);
 	if ( err ){
 		printf("Error gpiod_line_request_falling_edge_events %d: %s \n",  gpioLine, strerror(errno));
 		goto cleanup;
