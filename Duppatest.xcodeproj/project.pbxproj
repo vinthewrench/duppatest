@@ -12,6 +12,7 @@
 		2E82106128300144003D074C /* I2C.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2E82105E28300143003D074C /* I2C.cpp */; };
 		2E821064283001E6003D074C /* DuppaEncoder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2E821062283001E6003D074C /* DuppaEncoder.cpp */; };
 		2E821069283037A6003D074C /* DuppaLEDRing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2E821067283037A6003D074C /* DuppaLEDRing.cpp */; };
+		2E8210E42838606C003D074C /* macos_gpiod.c in Sources */ = {isa = PBXBuildFile; fileRef = 2E8210E32838606C003D074C /* macos_gpiod.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -40,6 +41,7 @@
 		2E821067283037A6003D074C /* DuppaLEDRing.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = DuppaLEDRing.cpp; sourceTree = "<group>"; };
 		2E821068283037A6003D074C /* DuppaLEDRing.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = DuppaLEDRing.hpp; sourceTree = "<group>"; };
 		2E8210DD2837EF94003D074C /* macos_gpiod.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = macos_gpiod.h; sourceTree = "<group>"; };
+		2E8210E32838606C003D074C /* macos_gpiod.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = macos_gpiod.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,6 +86,7 @@
 				2E82105E28300143003D074C /* I2C.cpp */,
 				2E82105F28300143003D074C /* I2C.hpp */,
 				2E8210DD2837EF94003D074C /* macos_gpiod.h */,
+				2E8210E32838606C003D074C /* macos_gpiod.c */,
 			);
 			path = src;
 			sourceTree = "<group>";
@@ -145,6 +148,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2E821069283037A6003D074C /* DuppaLEDRing.cpp in Sources */,
+				2E8210E42838606C003D074C /* macos_gpiod.c in Sources */,
 				2E82106128300144003D074C /* I2C.cpp in Sources */,
 				2E821056283000A3003D074C /* main.cpp in Sources */,
 				2E82106028300144003D074C /* ErrorMgr.cpp in Sources */,

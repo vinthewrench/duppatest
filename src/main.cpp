@@ -79,7 +79,7 @@ int main(int argc, const char * argv[]) {
 		goto cleanup;
 	}
 	
-	// setup the l;ine for input and select pull up resistor
+	// setup the line for input and select pull up resistor
 	err =  gpiod_line_request_falling_edge_events_flags(_line,
 							GPIOD_TEST_CONSUMER,
 							GPIOD_LINE_REQUEST_FLAG_BIAS_PULL_UP);
