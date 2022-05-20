@@ -66,13 +66,13 @@ DuppaEncoder::~DuppaEncoder(){
 	stop();
 }
 
-bool DuppaEncoder::begin(uint8_t deviceAddress, uint16_t conf, uint16_t intConf){
+bool DuppaEncoder::begin(uint8_t deviceAddress, uint16_t conf, uint8_t intConf){
 	int error = 0;
 	
 	return begin(deviceAddress,  conf,intConf,  error);
 }
 
-bool DuppaEncoder::begin(uint8_t deviceAddress, uint16_t conf, uint16_t intConf, int &error){
+bool DuppaEncoder::begin(uint8_t deviceAddress, uint16_t conf, uint8_t intConf, int &error){
 	
 	if( _i2cPort.begin(deviceAddress, error)
 		&& _i2cPort.writeByte(REG_GCONF,  (uint8_t) 0x80)   // reset the device
@@ -82,7 +82,8 @@ bool DuppaEncoder::begin(uint8_t deviceAddress, uint16_t conf, uint16_t intConf,
 		usleep(400);
 		
 		if( _i2cPort.writeByte(REG_GCONF,  (uint8_t)( conf & 0xFF))
-			&& _i2cPort.writeByte(REG_GCONF2,   (uint8_t)((conf >> 8) & 0xFF)))
+			&& _i2cPort.writeByte(REG_GCONF2,   (uint8_t)((conf >> 8) & 0xFF))
+			&& _i2cPort.writeByte(REG_INTCONF,   intConf))
 		{
 			_gconf = conf;
 			if ((conf & CLK_STRECH_ENABLE) == 0)
