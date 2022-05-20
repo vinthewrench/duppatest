@@ -65,6 +65,9 @@ bool DuppaLEDRing::begin(uint8_t deviceAddress,  int &error){
 	
 	if( _i2cPort.begin(deviceAddress, error)
 		&& setConfig(0x01) //Normal operation
+		&& SetScaling(0xFF)		// good vaues for Duppa RIng
+		&& GlobalCurrent(010)
+		&& clearAll() // shutt off all LEDS
 		) {
 		_ledOffset = 0;
 		_flipOffset = false;

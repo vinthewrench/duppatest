@@ -19,11 +19,11 @@
 
 int main(int argc, const char * argv[]) {
 	
-	DuppaEncoder duppa;
 	DuppaEncoder duppa1;
-	DuppaLEDRing led;
+	DuppaEncoder duppa2;
 	DuppaLEDRing led1;
-	
+	DuppaLEDRing led2;
+
 	try {
 		
 		bool quit = false;
@@ -40,57 +40,41 @@ int main(int argc, const char * argv[]) {
 		//		INT_DATA= The register are considered integer.
 		//			WRAP_DISABLE= The WRAP option is disabled
 		//			DIRE_LEFT= Encoder left direction increase the value
-		//			IPUP_ENABLE= INT pin have the pull-up enabled.
+		//			IPUP_ENABLE= INT pin have the pull-up enabled2.
 		//			RMOD_X1= Encoder configured as X1.
 		//			RGB_ENCODER= type of encoder is RGB, change to STD_ENCODER in case you are using a normal rotary encoder.
 		
 		// Open device
-		if(!duppa.begin(0x40, config, errnum))
-			throw Exception("failed to setup Duppa ", errnum);
-		
-		// Open device
 		if(!duppa1.begin(0x41, config, errnum))
 			throw Exception("failed to setup Duppa1 ", errnum);
-		
+
 		// Open device
-		if(!led.begin(0x61, errnum))
+		if(!duppa2.begin(0x40, config, errnum))
+			throw Exception("failed to setup Duppa ", errnum);
+  
+		// Open device
+		if(!led2.begin(0x61, errnum))
 			throw Exception("failed to setup LED   ", errnum);
 		
 		// Open device
 		if(!led1.begin(0x60, errnum))
 			throw Exception("failed to setup LED  1  ", errnum);
 		
-		led.setOffset(2, true);
+		
+		// the LEDS are mechanically reversed from the CW movement of the knobs - so reverse them
+		// and offset one of them
+		led2.setOffset(2, true);
 		led1.setOffset(0, true);
 	
-		if(!led.reset())
-			throw Exception("failed to reset LED ");
+//		if(!led2.reset())
+//			throw Exception("failed to reset LED ");
+//
+//		if(!led1.reset())
+//			throw Exception("failed to reset LED 1");
+//
+	 
 		
-		if(!led1.reset())
-			throw Exception("failed to reset LED 1");
-		
-		
-		led.setConfig(0x01);
-		led.SetScaling(0xFF);
-		led.GlobalCurrent(010);
-		led.clearAll();
-		
-		led1.setConfig(0x01);
-		led1.SetScaling(0xFF);
-		led1.GlobalCurrent(010);
-		led1.clearAll();
-		
-		
-		for (int i = 0; i < 24; i++) {
-			led.setGREEN(i, 0xff);
-			usleep(20 * 1000);
-		}
-		
-		for (int i = 0; i < 24; i++) {
-			led.setGREEN(i, 0);
-			usleep(20 * 1000);
-		}
-		//
+		// run one cycle of LEDS  on and off
 		for (int i = 0; i < 24; i++) {
 			led1.setBLUE(i, 0xff);
 			usleep(20 * 1000);
@@ -100,21 +84,35 @@ int main(int argc, const char * argv[]) {
 			led1.setBLUE( i, 0);
 			usleep(20 * 1000);
 		}
+
 		
+		for (int i = 0; i < 24; i++) {
+			led2.setGREEN(i, 0xff);
+			usleep(20 * 1000);
+		}
+		
+		for (int i = 0; i < 24; i++) {
+			led2.setGREEN(i, 0);
+			usleep(20 * 1000);
+		}
+			
 			
 		printf("reading status\n");
 		
-		if(!duppa.setColor(0, 255, 0))
+		// set the knob colors
+		if(!duppa2.setColor(0, 255, 0))
 			throw Exception("failed to setColor Duppa");
 		
 		if(!duppa1.setColor(0, 0, 255))
 			throw Exception("failed to setColor Duppa1 ");
+	
+		// loop and look for changes
 		
 		while(!quit){
 			uint8_t status;
 			uint8_t status1;
 			
-			if(!duppa.updateStatus(status)
+			if(!duppa2.updateStatus(status)
 				||! duppa1.updateStatus(status1) ){
 				printf("readStatus failed\n");
 				quit = true;
@@ -126,16 +124,16 @@ int main(int argc, const char * argv[]) {
 				static int cntr = 0;
 				
 				bool cw = false;
-				if(duppa.wasPressed())
+				if(duppa2.wasPressed())
 					printf("L Pressed \n");
 				
-				if(duppa.wasClicked()){
+				if(duppa2.wasClicked()){
 					quit = true;
 				}
 				
-				if(duppa.wasMoved(cw)){
-					//			led.setGREEN(23-cntr, 0);
-					led.setGREEN(cntr, cw?128:0);
+				if(duppa2.wasMoved(cw)){
+					//			led2.setGREEN(23-cntr, 0);
+					led2.setGREEN(cntr, cw?128:0);
 					
 					cntr += cw ?1:-1;
 					if (cntr> 23) cntr = 23;
@@ -168,13 +166,11 @@ int main(int argc, const char * argv[]) {
 			}
 			
 			usleep(2000);
-			
-		}
-		
-		
-		duppa.stop();
+ 		}
+ 
+		duppa2.stop();
 		duppa1.stop();
-		led.stop();
+		led2.stop();
 		led1.stop();
 		
 	}
