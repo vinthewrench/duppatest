@@ -114,8 +114,6 @@ int main(int argc, const char * argv[]) {
 		| 	DuppaEncoder::PUSHP
 		| 	DuppaEncoder::RINC
 		| 	DuppaEncoder::RDEC ;
-
-		
 		
 		// Open device
 		if(!knob1.begin(0x41, config,interrupt_config, errnum))
