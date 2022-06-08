@@ -115,6 +115,7 @@ if ( err ){
 		uint8_t interrupt_config =
 			DuppaEncoder::PUSHR
 		| 	DuppaEncoder::PUSHP
+		| 	DuppaEncoder::PUSHD
 		| 	DuppaEncoder::RINC
 		| 	DuppaEncoder::RDEC ;
 		
@@ -230,6 +231,9 @@ if ( err ){
 				bool cw = false;
 				static uint8_t cntr1 = 0;
 				
+				if(knob1.wasDoubleClicked())
+					printf("Knob 1 Double Clicked \n");
+		 
 				if(knob1.wasPressed())
 					printf("Knob 1 Pressed \n");
 				
@@ -256,6 +260,10 @@ if ( err ){
 				static int cntr = 0;
 				
 				bool cw = false;
+				
+				if(knob2.wasDoubleClicked())
+					printf("Knob 2 Double Clicked \n");
+		
 				if(knob2.wasPressed())
 					printf("Knob2 Pressed \n");
 				

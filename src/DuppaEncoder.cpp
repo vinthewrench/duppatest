@@ -66,6 +66,7 @@ DuppaEncoder::~DuppaEncoder(){
 	stop();
 }
 
+
 bool DuppaEncoder::begin(uint8_t deviceAddress, uint16_t conf, uint8_t intConf){
 	int error = 0;
 	
@@ -153,6 +154,10 @@ bool DuppaEncoder::wasClicked() {
 
 bool DuppaEncoder::wasPressed() {
 	return  (_lastStatus & PUSHP) != 0;
+}
+
+bool DuppaEncoder::wasDoubleClicked() {
+	return  (_lastStatus & PUSHD) != 0;
 }
 
 bool DuppaEncoder::wasMoved(bool &cw) {
