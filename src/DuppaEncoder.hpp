@@ -62,13 +62,16 @@ public:
 
 	bool reset();
  
+	bool setAntiBounce(uint8_t period); // period * 0.192ms
+	bool  setDoubleClickTime(uint8_t period);  // period * 10ms
+
 	// resets on read.
 	bool updateStatus();
 	bool updateStatus(uint8_t &regOut);
 	
 	bool wasClicked();	// pressed and let go
+	bool wasDoubleClicked(); 
 	bool wasPressed();	// still down
-	bool wasDoubleClicked();
 	bool wasMoved(bool &cw);
 	
 	uint8_t	getDevAddr();

@@ -127,6 +127,10 @@ if ( err ){
 		if(!knob2.begin(0x40, config, interrupt_config, errnum))
 			throw Exception("failed to setup Duppa ", errnum);
 		
+		
+		knob1.setDoubleClickTime(50);
+		knob1.setDoubleClickTime(50);
+	
 		// Open device
 		if(!led2.begin(0x61, errnum))
 			throw Exception("failed to setup LED   ", errnum);
