@@ -63,7 +63,7 @@ public:
 	bool reset();
  
 	bool setAntiBounce(uint8_t period); // period * 0.192ms
-	bool  setDoubleClickTime(uint8_t period);  // period * 10ms
+	bool setDoubleClickTime(uint8_t period);  // period * 10ms
 
 	// resets on read.
 	bool updateStatus();
