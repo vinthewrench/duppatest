@@ -142,7 +142,7 @@ if ( err ){
 		
 		// the LEDS are mechanically reversed from the CW movement of the knobs - so reverse them
 		// and offset one of them
-		led2.setOffset(2, true);
+		led2.setOffset(14, true);
 		led1.setOffset(0, true);
 			
 		// run one cycle of LEDS  on and off
