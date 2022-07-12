@@ -212,54 +212,54 @@ if ( err ){
 		_leftRing.setOffset(14, true);
 		_rightRing.setOffset(0, true);
 			
-//		
+//
 //		// dim the knob colors
 //		for(int j = 0 ; j < kelly_colors_count ; j ++){
-//			
+//
 //			RGB color = RGB(kelly_colors[j]);
 //			printf("%06x \n", kelly_colors[j] );
 //			_leftKnob.setColor(color );
 //			usleep(40 * 10000);
 //		}
-//		
 //
-//		
+//
+//
 //		// do eight cycles dimming..
 //		for(int level = 0; level < 8; level ++) {
-//			
+//
 //			uint8_t ledCurrent = calculateRingCurrent(level);
 //			_rightRing.SetGlobalCurrent(ledCurrent);
-//		
+//
 //			// run one cycle of LEDS  on and off
 //			for (int i = 0; i < 24; i++) {
 //				_rightRing.setBLUE(i, 0xff);
 //				usleep(20 * 1000);
 //			}
-//			
+//
 //			for (int i = 0; i < 24; i++) {
 //				_rightRing.setBLUE( i, 0);
 //				usleep(20 * 1000);
 //			}
-//			
+//
 //		}
-//		
+//
 //		// do eight cycles dimming..
 //		for(int level = 0; level < 8; level ++) {
-//			
+//
 //			uint8_t ledCurrent = calculateRingCurrent(level);
 //			_leftRing.SetGlobalCurrent(ledCurrent);
-//		
+//
 //			for (int i = 0; i < 24; i++) {
 //				_leftRing.setGREEN(i, 0xff);
 //				usleep(20 * 1000);
 //			}
-//			
+//
 //			for (int i = 0; i < 24; i++) {
 //				_leftRing.setGREEN(i, 0);
 //				usleep(20 * 1000);
 //			}
 //		}
-//				
+//
 		
 	 		// set the knob colors
 		_rightKnob.setColor( RGB::Blue);
@@ -340,9 +340,10 @@ if ( err ){
 					_rightRing.setBLUE((cntr1 % 23) , 0x7f);
 					printf("_rightKnob moved %s %d \n", cw? "CW": "CCW", cntr1);
 					
-					int offset = cw %  kelly_colors_count;
+					int offset = cntr1 %  kelly_colors_count;
 					RGB color = RGB(kelly_colors[offset]);
 			 		_rightKnob.setColor(color );
+		 
 				}
 			}
 			
