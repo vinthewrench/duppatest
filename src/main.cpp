@@ -48,6 +48,8 @@ constexpr uint8_t antiBounceDefault = 1;
 constexpr uint8_t doubleClickTime = 50;   // 50 * 10 ms
 
 
+
+
 static uint8_t calculateRingCurrent(uint8_t level) {
 	uint8_t current = DuppaLEDRing::maxGlobalCurrent();
 	
@@ -70,6 +72,34 @@ int main(int argc, const char * argv[]) {
 	
 	int err = 0;
 
+	const uint32_t kelly_colors[] = {
+		 0xFFB300, // Vivid Yellow
+		 0x803E75, // Strong Purple
+		 0xFF6800, // Vivid Orange
+		 0xA6BDD7, // Very Light Blue
+		 0xC10020, // Vivid Red
+		 0xCEA262, // Grayish Yellow
+		 0x817066, // Medium Gray
+
+		 // The following don't work well for people with defective color vision
+		 0x007D34, // Vivid Green
+		 0xF6768E, // Strong Purplish Pink
+		 0x00538A, // Strong Blue
+		 0xFF7A5C, // Strong Yellowish Pink
+		 0x53377A, // Strong Violet
+		 0xFF8E00, // Vivid Orange Yellow
+		 0xB32851, // Strong Purplish Red
+		 0xF4C800, // Vivid Greenish Yellow
+		 0x7F180D, // Strong Reddish Brown
+		 0x93AA00, // Vivid Yellowish Green
+		 0x593315, // Deep Yellowish Brown
+		 0xF13A13, // Vivid Reddish Orange
+		 0x232C16, // Dark Olive Green
+	};
+
+#define kelly_colors_count (sizeof(kelly_colors) / sizeof(uint32_t)  )
+	
+	
 #if USE_GPIO_INTERRUPT
 	
 #define GPIOD_TEST_CONSUMER "gpiod-test"
@@ -217,15 +247,18 @@ if ( err ){
 				_leftRing.setGREEN(i, 0);
 				usleep(20 * 1000);
 			}
+		}
 		
+		// dim the knob colors
+		for(int j = 0 ; j < kelly_colors_count ; j ++){
+			
+			_rightKnob.setColor( RGB(kelly_colors[j]));
+			usleep(20 * 1000);
 		}
 		
 		
 		
-	
-		printf("reading status\n");
-		
-		// set the knob colors
+	 		// set the knob colors
 		_rightKnob.setColor( RGB::Blue);
 		_leftKnob.setColor( RGB::Lime);
 	
