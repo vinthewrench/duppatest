@@ -43,13 +43,17 @@
 
 #endif
 
+constexpr uint8_t antiBounceDefault = 1;
+constexpr uint8_t antiBounceSlow = 32;
+
+constexpr uint8_t doubleClickTime = 50;   // 50 * 10 ms
 
 int main(int argc, const char * argv[]) {
 	
-	DuppaEncoder knob1;
-	DuppaEncoder knob2;
-	DuppaLEDRing led1;
-	DuppaLEDRing led2;
+	DuppaEncoder _rightKnob;
+	DuppaEncoder _leftKnob;
+	DuppaLEDRing _rightRing;
+	DuppaLEDRing _leftRing;
 	
 	int err = 0;
 
@@ -107,7 +111,7 @@ if ( err ){
 		//		INT_DATA= The register are considered integer.
 		//			WRAP_DISABLE= The WRAP option is disabled
 		//			DIRE_LEFT= Encoder left direction increase the value
-		//			IPUP_ENABLE= INT pin have the pull-up enabled2.
+		//			IPUP_ENABLE= INT pin have the pull-up enab_leftRing.
 		//			RMOD_X1= Encoder configured as X1.
 		//			RGB_ENCODER= type of encoder is RGB, change to STD_ENCODER in case you are using a normal rotary encoder.
 		
@@ -120,63 +124,82 @@ if ( err ){
 		| 	DuppaEncoder::RDEC ;
 		
 		// Open device
-		if(!knob1.begin(0x41, config,interrupt_config, errnum))
-			throw Exception("failed to setup knob1 ", errnum);
+		if(!_rightKnob.begin(0x41, config,interrupt_config, errnum))
+			throw Exception("failed to setup _rightKnob ", errnum);
 		
 		// Open device
-		if(!knob2.begin(0x40, config, interrupt_config, errnum))
+		if(!_leftKnob.begin(0x40, config, interrupt_config, errnum))
 			throw Exception("failed to setup Duppa ", errnum);
 		
 		
-		knob1.setDoubleClickTime(50);
-		knob1.setDoubleClickTime(50);
-	
+		_rightKnob.setAntiBounce(antiBounceDefault);
+		_leftKnob.setAntiBounce(antiBounceDefault);
+		
+		_rightKnob.setDoubleClickTime(doubleClickTime);
+		_leftKnob.setDoubleClickTime(doubleClickTime);
+
 		// Open device
-		if(!led2.begin(0x61, errnum))
+		if(!_leftRing.begin(0x61, errnum))
 			throw Exception("failed to setup LED   ", errnum);
 		
 		// Open device
-		if(!led1.begin(0x60, errnum))
+		if(!_rightRing.begin(0x60, errnum))
 			throw Exception("failed to setup LED  1  ", errnum);
 		
+		_leftRing.reset();
+		_rightRing.reset();
+	 
+		// Set for normal operation
+		_rightRing.setConfig(0x01);
+		_leftRing.setConfig(0x01);
 		
+		// full scaling -- control current with global curent
+		_rightRing.SetScaling(0xFF);
+		_leftRing.SetScaling(0xFF);
+		
+		// set full bright
+		_rightRing.SetGlobalCurrent(DuppaLEDRing::maxGlobalCurrent());
+		_leftRing.SetGlobalCurrent(DuppaLEDRing::maxGlobalCurrent());
+ 
+		_rightRing.clearAll();
+		_leftRing.clearAll();
+		
+	
 		// the LEDS are mechanically reversed from the CW movement of the knobs - so reverse them
 		// and offset one of them
-		led2.setOffset(14, true);
-		led1.setOffset(0, true);
+		_leftRing.setOffset(14, true);
+		_rightRing.setOffset(0, true);
 			
 		// run one cycle of LEDS  on and off
 		for (int i = 0; i < 24; i++) {
-			led1.setBLUE(i, 0xff);
+			_rightRing.setBLUE(i, 0xff);
 			usleep(20 * 1000);
 		}
 		
 		for (int i = 0; i < 24; i++) {
-			led1.setBLUE( i, 0);
+			_rightRing.setBLUE( i, 0);
 			usleep(20 * 1000);
 		}
 		
 		
 		for (int i = 0; i < 24; i++) {
-			led2.setGREEN(i, 0xff);
+			_leftRing.setGREEN(i, 0xff);
 			usleep(20 * 1000);
 		}
 		
 		for (int i = 0; i < 24; i++) {
-			led2.setGREEN(i, 0);
+			_leftRing.setGREEN(i, 0);
 			usleep(20 * 1000);
 		}
 		
 		
+	
 		printf("reading status\n");
 		
 		// set the knob colors
-		if(!knob2.setColor(0, 255, 0))
-			throw Exception("failed to setColor Duppa");
-		
-		if(!knob1.setColor(0, 0, 255))
-			throw Exception("failed to setColor knob1 ");
-		
+		_rightKnob.setColor( RGB::Blue);
+		_leftKnob.setColor( RGB::Lime);
+	
 		// loop and look for changes
 		
 		uint8_t status2 = 0;
@@ -188,9 +211,9 @@ if ( err ){
 			for(;;) {
 				
 				// get status from knobs
-				if(! (knob2.updateStatus(status2)
-						&& knob1.updateStatus(status1)))
-					throw Exception("failed to setColor knob1 ");
+				if(! (_leftKnob.updateStatus(status2)
+						&& _rightKnob.updateStatus(status1)))
+					throw Exception("failed to setColor _rightKnob ");
 	 
 				// if any status bit are set process them
 				if( (status1 | status2) != 0) break;
@@ -235,22 +258,22 @@ if ( err ){
 				bool cw = false;
 				static uint8_t cntr1 = 0;
 				
-				if(knob1.wasDoubleClicked())
+				if(_rightKnob.wasDoubleClicked())
 					printf("Knob 1 Double Clicked \n");
 		 
-				if(knob1.wasPressed())
+				if(_rightKnob.wasPressed())
 					printf("Knob 1 Pressed \n");
 				
-				if(knob1.wasClicked())
-					printf("Knob1 Clicked \n");
+				if(_rightKnob.wasClicked())
+					printf("_rightKnob Clicked \n");
 				
-				if(knob1.wasMoved(cw)){
+				if(_rightKnob.wasMoved(cw)){
 					//				printf("R Moved %s ", cw? "CW": "CCW");
 					
-					led1.setBLUE(  (cntr1 % 23), 0);
+					_rightRing.setBLUE(  (cntr1 % 23), 0);
 					cntr1 += cw ?1:-1;
-					led1.setBLUE((cntr1 % 23) , 0x7f);
-					printf("Knob1 moved %s %d \n", cw? "CW": "CCW", cntr1);
+					_rightRing.setBLUE((cntr1 % 23) , 0x7f);
+					printf("_rightKnob moved %s %d \n", cw? "CW": "CCW", cntr1);
 				}
 			}
 			
@@ -265,24 +288,24 @@ if ( err ){
 				
 				bool cw = false;
 				
-				if(knob2.wasDoubleClicked())
+				if(_leftKnob.wasDoubleClicked())
 					printf("Knob 2 Double Clicked \n");
 		
-				if(knob2.wasPressed())
-					printf("Knob2 Pressed \n");
+				if(_leftKnob.wasPressed())
+					printf("_leftKnob Pressed \n");
 				
-				if(knob2.wasClicked()){
-					printf("Knob2 Clicked - Quit test \n");
+				if(_leftKnob.wasClicked()){
+					printf("_leftKnob Clicked - Quit test \n");
 					quit = true;
 				}
 				
-				if(knob2.wasMoved(cw)){
-					led2.setGREEN(cntr, cw?128:0);
+				if(_leftKnob.wasMoved(cw)){
+					_leftRing.setGREEN(cntr, cw?128:0);
 					
 					cntr += cw ?1:-1;
 					if (cntr> 23) cntr = 23;
 					else if (cntr < 0) cntr = 0;
-					printf("Knob2 moved %s %d \n", cw? "CW": "CCW", cntr);
+					printf("_leftKnob moved %s %d \n", cw? "CW": "CCW", cntr);
 					
 					
 				}
@@ -291,10 +314,10 @@ if ( err ){
 			
 		}
 		
-		knob2.stop();
-		knob1.stop();
-		led2.stop();
-		led1.stop();
+		_leftKnob.stop();
+		_rightKnob.stop();
+		_leftRing.stop();
+		_rightRing.stop();
 		
 
 		
