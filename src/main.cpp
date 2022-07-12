@@ -348,14 +348,10 @@ if ( err ){
 					printf("_rightKnob moved %s %d \n", cw? "CW": "CCW", cntr1);
 					
 					int offset = cntr1 %  kelly_colors_count;
-					RGB color = RGB(kelly_colors[offset]);
-					uint bright  = (vol / 23.) * 100.0;
-					
-					rightColor.r = (color.r /100.)  * bright;
-					rightColor.g = (color.g /100.)  * bright;
-					rightColor.b = (color.b /100.)  * bright;
-  					_rightKnob.setColor(rightColor );
-		 
+					rightColor = RGB(kelly_colors[offset]);
+					_rightKnob.setColor(rightColor );
+		
+			 
 				}
 			}
 			
@@ -387,7 +383,13 @@ if ( err ){
 					else if (vol < 0) vol = 0;
 					printf("_leftKnob moved %s %d \n", cw? "CW": "CCW", vol);
 					
-					
+	 
+					uint bright  = (vol / 23.) * 100.0;
+	 				rightColor.r = (rightColor.r /100.)  * bright;
+					rightColor.g = (rightColor.g /100.)  * bright;
+					rightColor.b = (rightColor.b /100.)  * bright;
+					_rightKnob.setColor(rightColor );
+	
 				}
 				//			printf("\n");
 			}
