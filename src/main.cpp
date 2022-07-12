@@ -76,6 +76,7 @@ int main(int argc, const char * argv[]) {
 		0x7F180D, // Strong Reddish Brown
 		0x593315, // Deep Yellowish Brown
 		0xC10020, // Vivid Red
+		0xFF0000, // RED
 		0xF13A13, // Vivid Reddish Orange
 		0xFF7A5C, // Strong Yellowish Pink
 		0xFF6800, // Vivid Orange
@@ -88,6 +89,7 @@ int main(int argc, const char * argv[]) {
 		0x232C16, // Dark Olive Green
 		0xA6BDD7, // Very Light Blue
 		0x00538A, // Strong Blue
+		0x0000FF, // BLUE
 		0x803E75, // Strong Purple
 		0xF6768E, // Strong Purplish Pink
 		0x53377A, // Strong Violet
@@ -273,6 +275,8 @@ if ( err ){
 
 		while(!quit){
 	 
+			static int vol = 0;
+
 	 		// loop until status changes
 			for(;;) {
 				
@@ -343,6 +347,8 @@ if ( err ){
 					
 					int offset = cntr1 %  kelly_colors_count;
 					RGB color = RGB(kelly_colors[offset]);
+					uint bright  = (vol / 23.) * 100.0;
+					color = color.dim(bright);
 			 		_rightKnob.setColor(color );
 		 
 				}
@@ -352,11 +358,9 @@ if ( err ){
 			// KNOB 2 is green.
 			// we will track the LED with a trail as it increases..
 			// think of it as a volume control knob.
-			
+	
 			if(status2 != 0){
-				
-				static int cntr = 0;
-				
+	 
 				bool cw = false;
 				
 				if(_leftKnob.wasDoubleClicked())
@@ -371,12 +375,12 @@ if ( err ){
 				}
 				
 				if(_leftKnob.wasMoved(cw)){
-					_leftRing.setGREEN(cntr, cw?128:0);
+					_leftRing.setGREEN(vol, cw?128:0);
 					
-					cntr += cw ?1:-1;
-					if (cntr> 23) cntr = 23;
-					else if (cntr < 0) cntr = 0;
-					printf("_leftKnob moved %s %d \n", cw? "CW": "CCW", cntr);
+					vol += cw ?1:-1;
+					if (vol> 23) cntr = 23;
+					else if (vol < 0) cntr = 0;
+					printf("_leftKnob moved %s %d \n", cw? "CW": "CCW", vol);
 					
 					
 				}
