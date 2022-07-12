@@ -213,6 +213,16 @@ if ( err ){
 		_leftRing.setOffset(14, true);
 		_rightRing.setOffset(0, true);
 			
+		
+		// dim the knob colors
+		for(int j = 0 ; j < kelly_colors_count ; j ++){
+			
+			_rightKnob.setColor( RGB(kelly_colors[j]));
+			usleep(40 * 1000);
+		}
+		
+
+		
 		// do eight cycles dimming..
 		for(int level = 0; level < 8; level ++) {
 			
@@ -248,15 +258,7 @@ if ( err ){
 				usleep(20 * 1000);
 			}
 		}
-		
-		// dim the knob colors
-		for(int j = 0 ; j < kelly_colors_count ; j ++){
-			
-			_rightKnob.setColor( RGB(kelly_colors[j]));
-			usleep(20 * 1000);
-		}
-		
-		
+				
 		
 	 		// set the knob colors
 		_rightKnob.setColor( RGB::Blue);
