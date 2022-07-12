@@ -202,16 +202,24 @@ if ( err ){
 			
 		}
 		
+		// do eight cycles dimming..
+		for(int level = 0; level < 8; level ++) {
+			
+			uint8_t ledCurrent = calculateRingCurrent(level);
+			_leftRing.SetGlobalCurrent(ledCurrent);
 		
-		for (int i = 0; i < 24; i++) {
-			_leftRing.setGREEN(i, 0xff);
-			usleep(20 * 1000);
+			for (int i = 0; i < 24; i++) {
+				_leftRing.setGREEN(i, 0xff);
+				usleep(20 * 1000);
+			}
+			
+			for (int i = 0; i < 24; i++) {
+				_leftRing.setGREEN(i, 0);
+				usleep(20 * 1000);
+			}
+		
 		}
 		
-		for (int i = 0; i < 24; i++) {
-			_leftRing.setGREEN(i, 0);
-			usleep(20 * 1000);
-		}
 		
 		
 	
