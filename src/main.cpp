@@ -272,11 +272,13 @@ if ( err ){
 		
 		uint8_t status2 = 0;
 		uint8_t status1 = 0;
+		RGB rightColor = RGB::White;
+		_rightKnob.setColor( rightColor);
 
 		while(!quit){
 	 
 			static int vol = 0;
-
+			
 	 		// loop until status changes
 			for(;;) {
 				
@@ -348,8 +350,11 @@ if ( err ){
 					int offset = cntr1 %  kelly_colors_count;
 					RGB color = RGB(kelly_colors[offset]);
 					uint bright  = (vol / 23.) * 100.0;
-					color = color.dim(bright);
-			 		_rightKnob.setColor(color );
+					
+					rightColor.r = (color.r /100.)  * bright;
+					rightColor.g = (color.g /100.)  * bright;
+					rightColor.b = (color.b /100.)  * bright;
+  					_rightKnob.setColor(rightColor );
 		 
 				}
 			}
@@ -378,8 +383,8 @@ if ( err ){
 					_leftRing.setGREEN(vol, cw?128:0);
 					
 					vol += cw ?1:-1;
-					if (vol> 23) cntr = 23;
-					else if (vol < 0) cntr = 0;
+					if (vol> 23) vol = 23;
+					else if (vol < 0) vol = 0;
 					printf("_leftKnob moved %s %d \n", cw? "CW": "CCW", vol);
 					
 					

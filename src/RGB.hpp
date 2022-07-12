@@ -85,17 +85,7 @@ struct RGB {
 		return *this;
 	}
 	
-	inline RGB dim(uint bright){
 	 
-		RGB newcolor;
-		
-		newcolor.r = (this->r /100.)  * bright;
-		newcolor.g = (this->g /100.)  * bright;
-		newcolor.b = (this->b /100.)  * bright;
-		 
-		return newcolor;
-	}
-	
 	/// Predefined RGB colors
 	typedef enum {
 		AliceBlue=0xF0F8FF,
