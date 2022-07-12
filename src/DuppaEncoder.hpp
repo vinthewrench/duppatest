@@ -8,7 +8,7 @@
 #pragma once
 
 #include "I2C.hpp"
-
+#include "RGB.hpp"
 using namespace std;
 
 class DuppaEncoder
@@ -70,13 +70,14 @@ public:
 	bool updateStatus(uint8_t &regOut);
 	
 	bool wasClicked();	// pressed and let go
-	bool wasDoubleClicked(); 
+	bool wasDoubleClicked();
 	bool wasPressed();	// still down
 	bool wasMoved(bool &cw);
 	
 	uint8_t	getDevAddr();
   
 	bool setColor(uint8_t red, uint8_t green, uint8_t blue );
+	bool setColor(RGB color);
 
 	
 private:

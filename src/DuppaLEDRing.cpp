@@ -7,6 +7,7 @@
 
 #include "DuppaLEDRing.hpp"
 #include <unistd.h>
+#include <algorithm>
 
 enum I2C_Register {
 	COMMANDREGISTER 		= 0xFD,
@@ -47,6 +48,11 @@ enum I2C_Register {
 #define ISSI3746_PWM_FREQUENCY_ENABLE 0xE0
 #define ISSI3746_PWM_FREQUENCY_SET 0xE2
 
+
+// do not fuck with this!!
+constexpr uint8_t max_global_current  = 10;
+ 
+
 DuppaLEDRing::DuppaLEDRing(){
 	_isSetup = false;
 }
@@ -63,30 +69,30 @@ bool DuppaLEDRing::begin(uint8_t deviceAddress){
 
 bool DuppaLEDRing::begin(uint8_t deviceAddress,  int &error){
 	
+#if defined(__APPLE__)
+# pragma clang diagnostic ignored "-Wunreachable-code"
+	_isSetup = true;
+#else
+
 	if( _i2cPort.begin(deviceAddress, error)
 		&& setConfig(0x01) //Normal operation
-		&& SetScaling(0xFF)		// good vaues for Duppa RIng
-		&& GlobalCurrent(010)
-		&& clearAll() // shutt off all LEDS
 		) {
 		_ledOffset = 0;
 		_flipOffset = false;
 		_isSetup = true;
 	}
 	
-	
+#endif
 	return _isSetup;
 }
 
 void DuppaLEDRing::stop(){
 	
 	clearAll();
-	GlobalCurrent(0);
+	SetGlobalCurrent(0);
 	
 	_isSetup = false;
 	_i2cPort.stop();
-	
-	//	LOG_INFO("QwiicTwist(%02x) stop\n",  _i2cPort.getDevAddr());
 }
 
 uint8_t	DuppaLEDRing::getDevAddr(){
@@ -98,6 +104,10 @@ uint8_t	DuppaLEDRing::getDevAddr(){
 bool DuppaLEDRing::reset(void) {
 	bool success = false;
 	
+#if defined(__APPLE__)
+	return true;
+#endif
+
 	if(_i2cPort.isAvailable()){
 		
 		success =	selectBank(PAGE1)
@@ -114,7 +124,11 @@ bool DuppaLEDRing::reset(void) {
 
 bool DuppaLEDRing::clearAll(void) {
 	bool success = false;
-	
+
+#if defined(__APPLE__)
+	return true;
+#endif
+
 	if(_i2cPort.isAvailable()
 		&& selectBank(PAGE0)) {
 		
@@ -130,6 +144,7 @@ bool DuppaLEDRing::clearAll(void) {
 bool DuppaLEDRing::PWMFrequencyEnable(uint8_t PWMenable) {
 	bool success = false;
 
+	
 	success =	selectBank(PAGE1)
 	&&  _i2cPort.writeByte(PWM_FREQUENCY_ENABLE,	PWMenable);
 	
@@ -148,14 +163,34 @@ bool DuppaLEDRing::SpreadSpectrum(uint8_t spread){
 }
 
 
-bool DuppaLEDRing::GlobalCurrent(uint8_t curr) {
+uint8_t DuppaLEDRing::maxGlobalCurrent() {
+	return max_global_current;
+}
+
+bool DuppaLEDRing::SetGlobalCurrent(uint8_t curr) {
 	bool success = false;
+	
+	curr = min(static_cast<int>( curr), static_cast<int>(max_global_current));
+
 	success =	selectBank(PAGE1)
 	&&  _i2cPort.writeByte(GLOBALCURRENT,	curr);
 	return success;
 	
 }
 
+
+
+uint8_t DuppaLEDRing::GlobalCurrent(){
+	
+	uint8_t val  = 0;
+	
+	if(selectBank(PAGE1))
+		_i2cPort.readByte(GLOBALCURRENT, val);
+	
+	return  val;
+}
+
+ 
 bool DuppaLEDRing::SetScaling(uint8_t scal) {
 	bool success = false;
 	
@@ -206,9 +241,45 @@ uint8_t DuppaLEDRing::ledFromOffset(uint8_t led_n){
 	return led_n;
 }
 
+bool DuppaLEDRing::setColor(uint8_t led_n, led_color_t color){
+	return setColor(led_n, color.r, color.g, color.b);
+}
+
+bool DuppaLEDRing::setLEDs( led_block_t & leds){
+	bool success = false;
+ 
+	if(_i2cPort.isAvailable())
+	{
+		uint8_t data[72];
+		
+		for(int i = 0; i <24; i++) {
+			data [ issi_led_map[0][i]  -1]  = leds[ledFromOffset(i)].r;
+			data [ issi_led_map[1][i]  -1]  = leds[ledFromOffset(i)].g;
+			data [ issi_led_map[2][i]  -1]  = leds[ledFromOffset(i)].b;
+		};
+		
+		success = selectBank(PAGE0);
+		success &= _i2cPort.writeBlock(1, 24,  data+0);
+		success &= _i2cPort.writeBlock(25, 24,  data+24);
+		success &= _i2cPort.writeBlock(49, 24,  data+48);
+				
+	}
+		return success;
+}
+
+
+bool DuppaLEDRing::setColor(uint8_t led_n, RGB color){
+	return setColor(led_n, color.r, color.g, color.b);
+}
+
+
 bool  DuppaLEDRing::setColor(uint8_t led_n, uint8_t red, uint8_t green, uint8_t blue ){
 	bool success = false;
  
+#if defined(__APPLE__)
+	return true;
+#endif
+
 	led_n = ledFromOffset(led_n);
 
 	if(_i2cPort.isAvailable()
@@ -223,7 +294,10 @@ bool  DuppaLEDRing::setColor(uint8_t led_n, uint8_t red, uint8_t green, uint8_t 
 
 bool  DuppaLEDRing::setRED(uint8_t led_n, uint8_t color){
 	bool success = false;
-	
+#if defined(__APPLE__)
+	return true;
+#endif
+
 	led_n = ledFromOffset(led_n);
 	
 	if(_i2cPort.isAvailable()
@@ -236,7 +310,10 @@ bool  DuppaLEDRing::setRED(uint8_t led_n, uint8_t color){
 
 bool  DuppaLEDRing::setGREEN(uint8_t led_n, uint8_t color){
 	bool success = false;
-	
+#if defined(__APPLE__)
+	return true;
+#endif
+
 	led_n = ledFromOffset(led_n);
 
 	if(_i2cPort.isAvailable()
@@ -249,7 +326,10 @@ bool  DuppaLEDRing::setGREEN(uint8_t led_n, uint8_t color){
 
 bool  DuppaLEDRing::setBLUE(uint8_t led_n, uint8_t color){
 	bool success = false;
-	
+#if defined(__APPLE__)
+	return true;
+#endif
+
 	led_n = ledFromOffset(led_n);
 
 	if(_i2cPort.isAvailable()

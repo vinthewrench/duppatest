@@ -8,6 +8,7 @@
 #pragma once
 
 #include "I2C.hpp"
+#include "RGB.hpp"
 
 using namespace std;
 
@@ -16,9 +17,16 @@ class DuppaLEDRing
  
 public:
  
+	typedef struct {
+		uint8_t 	r;
+		uint8_t	g;
+		uint8_t	b;
+	} led_color_t;
+		
+	typedef led_color_t led_block_t[24];
+ 
 	DuppaLEDRing();
 	~DuppaLEDRing();
- 
  
 	bool begin(uint8_t deviceAddress);
 	bool begin(uint8_t deviceAddress, int &error);
@@ -32,10 +40,15 @@ public:
 	bool reset();
  
 	bool clearAll();
+	
+	bool setColor(uint8_t led_n, led_color_t color);
+	bool setLEDs(led_block_t &leds);
+
 	bool setColor(uint8_t led_n, uint8_t red, uint8_t green, uint8_t blue );
 	bool setRED(uint8_t led_n, uint8_t color);
 	bool setGREEN(uint8_t led_n, uint8_t color);
 	bool setBLUE(uint8_t led_n, uint8_t color);
+	bool setColor(uint8_t led_n, RGB color);
 
 	uint8_t	getDevAddr();
  
@@ -44,7 +57,9 @@ public:
 	bool 	PWMFrequencyEnable(uint8_t PWMenable);
 	bool  SpreadSpectrum(uint8_t spread);
 	bool  SetScaling(uint8_t scal);
-	bool  GlobalCurrent(uint8_t curr);
+	bool  SetGlobalCurrent(uint8_t curr);
+	uint8_t GlobalCurrent();
+	static uint8_t maxGlobalCurrent();
 	
 private:
  

@@ -42,6 +42,7 @@
 		2E821068283037A6003D074C /* DuppaLEDRing.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = DuppaLEDRing.hpp; sourceTree = "<group>"; };
 		2E8210DD2837EF94003D074C /* macos_gpiod.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = macos_gpiod.h; sourceTree = "<group>"; };
 		2E8210E32838606C003D074C /* macos_gpiod.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = macos_gpiod.c; sourceTree = "<group>"; };
+		2E8D3725287CF3F1000182E5 /* RGB.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = RGB.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,6 +88,7 @@
 				2E82105F28300143003D074C /* I2C.hpp */,
 				2E8210DD2837EF94003D074C /* macos_gpiod.h */,
 				2E8210E32838606C003D074C /* macos_gpiod.c */,
+				2E8D3725287CF3F1000182E5 /* RGB.hpp */,
 			);
 			path = src;
 			sourceTree = "<group>";

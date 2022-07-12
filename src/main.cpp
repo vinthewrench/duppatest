@@ -283,6 +283,8 @@ if ( err ){
 					if (cntr> 23) cntr = 23;
 					else if (cntr < 0) cntr = 0;
 					printf("Knob2 moved %s %d \n", cw? "CW": "CCW", cntr);
+					
+					
 				}
 				//			printf("\n");
 			}
