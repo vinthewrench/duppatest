@@ -217,7 +217,9 @@ if ( err ){
 		// dim the knob colors
 		for(int j = 0 ; j < kelly_colors_count ; j ++){
 			
-			_rightKnob.setColor( RGB(kelly_colors[j]));
+			RGB color = RGB(kelly_colors[j]);
+			printf("%06x \n", kelly_colors[j] );
+			_rightKnob.setColor(color );
 			usleep(40 * 1000);
 		}
 		
