@@ -93,10 +93,8 @@ int main(int argc, const char * argv[]) {
 		0xB32851, // Strong Purplish Red
 		0xCEA262, // Grayish Yellow
 		0x817066, // Medium Gray
-		
-		// The following don't work well for people with defective color vision
-		
-	};
+		0xFFFFFF, // White
+ 	};
 
 #define kelly_colors_count (sizeof(kelly_colors) / sizeof(uint32_t)  )
 	
@@ -309,7 +307,7 @@ if ( err ){
 					gpiod_line_event_read(_line, &evt);
 				}
 				else if (err == 0){
-					printf("timeout\n");
+//					printf("timeout\n");
 				}
 #else
 				usleep(2000);
@@ -341,6 +339,10 @@ if ( err ){
 					cntr1 += cw ?1:-1;
 					_rightRing.setBLUE((cntr1 % 23) , 0x7f);
 					printf("_rightKnob moved %s %d \n", cw? "CW": "CCW", cntr1);
+					
+					int offset = cw %  kelly_colors_count;
+					RGB color = RGB(kelly_colors[offset]);
+			 		_rightKnob.setColor(color );
 				}
 			}
 			
