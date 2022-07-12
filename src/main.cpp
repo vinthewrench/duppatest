@@ -44,9 +44,22 @@
 #endif
 
 constexpr uint8_t antiBounceDefault = 1;
-constexpr uint8_t antiBounceSlow = 32;
-
+ 
 constexpr uint8_t doubleClickTime = 50;   // 50 * 10 ms
+
+
+static uint8_t calculateRingCurrent(uint8_t level) {
+	uint8_t current = DuppaLEDRing::maxGlobalCurrent();
+	
+	level = min(static_cast<int>(level), 7);
+	
+	uint8_t table[] = {1, 1, 2, 4, 5,  6, 8, DuppaLEDRing::maxGlobalCurrent()};
+	
+	current = table[level];
+	
+	return current;
+	
+}
 
 int main(int argc, const char * argv[]) {
 	
@@ -170,15 +183,23 @@ if ( err ){
 		_leftRing.setOffset(14, true);
 		_rightRing.setOffset(0, true);
 			
-		// run one cycle of LEDS  on and off
-		for (int i = 0; i < 24; i++) {
-			_rightRing.setBLUE(i, 0xff);
-			usleep(20 * 1000);
-		}
+		// do eight cycles dimming..
+		for(int level = 0; level < 8; level ++) {
+			
+			uint8_t ledCurrent = calculateRingCurrent(level);
+			_rightRing.SetGlobalCurrent(ledCurrent);
 		
-		for (int i = 0; i < 24; i++) {
-			_rightRing.setBLUE( i, 0);
-			usleep(20 * 1000);
+			// run one cycle of LEDS  on and off
+			for (int i = 0; i < 24; i++) {
+				_rightRing.setBLUE(i, 0xff);
+				usleep(20 * 1000);
+			}
+			
+			for (int i = 0; i < 24; i++) {
+				_rightRing.setBLUE( i, 0);
+				usleep(20 * 1000);
+			}
+			
 		}
 		
 		
