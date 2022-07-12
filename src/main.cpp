@@ -84,6 +84,7 @@ int main(int argc, const char * argv[]) {
 		0xF4C800, // Vivid Greenish Yellow
 		0x93AA00, // Vivid Yellowish Green
 		0x007D34, // Vivid Green
+		0x00FF00, //  Green
 		0x232C16, // Dark Olive Green
 		0xA6BDD7, // Very Light Blue
 		0x00538A, // Strong Blue
