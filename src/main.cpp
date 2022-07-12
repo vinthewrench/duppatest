@@ -385,10 +385,12 @@ if ( err ){
 					
 	 
 					uint bright  = (vol / 23.) * 100.0;
-	 				rightColor.r = (rightColor.r /100.)  * bright;
-					rightColor.g = (rightColor.g /100.)  * bright;
-					rightColor.b = (rightColor.b /100.)  * bright;
-					_rightKnob.setColor(rightColor );
+					
+					RGB newColor ;
+					newColor.r = (rightColor.r /100.)  * bright;
+					newColor.g = (rightColor.g /100.)  * bright;
+					newColor.b = (rightColor.b /100.)  * bright;
+					_rightKnob.setColor(newColor );
 	
 				}
 				//			printf("\n");
