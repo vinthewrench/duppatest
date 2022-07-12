@@ -73,28 +73,29 @@ int main(int argc, const char * argv[]) {
 	int err = 0;
 
 	const uint32_t kelly_colors[] = {
-		 0xFFB300, // Vivid Yellow
-		 0x803E75, // Strong Purple
-		 0xFF6800, // Vivid Orange
-		 0xA6BDD7, // Very Light Blue
-		 0xC10020, // Vivid Red
-		 0xCEA262, // Grayish Yellow
-		 0x817066, // Medium Gray
-
-		 // The following don't work well for people with defective color vision
-		 0x007D34, // Vivid Green
-		 0xF6768E, // Strong Purplish Pink
-		 0x00538A, // Strong Blue
-		 0xFF7A5C, // Strong Yellowish Pink
-		 0x53377A, // Strong Violet
-		 0xFF8E00, // Vivid Orange Yellow
-		 0xB32851, // Strong Purplish Red
-		 0xF4C800, // Vivid Greenish Yellow
-		 0x7F180D, // Strong Reddish Brown
-		 0x93AA00, // Vivid Yellowish Green
-		 0x593315, // Deep Yellowish Brown
-		 0xF13A13, // Vivid Reddish Orange
-		 0x232C16, // Dark Olive Green
+		0x7F180D, // Strong Reddish Brown
+		0x593315, // Deep Yellowish Brown
+		0xC10020, // Vivid Red
+		0xF13A13, // Vivid Reddish Orange
+		0xFF7A5C, // Strong Yellowish Pink
+		0xFF6800, // Vivid Orange
+		0xFF8E00, // Vivid Orange Yellow
+		0xFFB300, // Vivid Yellow
+		0xF4C800, // Vivid Greenish Yellow
+		0x93AA00, // Vivid Yellowish Green
+		0x007D34, // Vivid Green
+		0x232C16, // Dark Olive Green
+		0xA6BDD7, // Very Light Blue
+		0x00538A, // Strong Blue
+		0x803E75, // Strong Purple
+		0xF6768E, // Strong Purplish Pink
+		0x53377A, // Strong Violet
+		0xB32851, // Strong Purplish Red
+		0xCEA262, // Grayish Yellow
+		0x817066, // Medium Gray
+		
+		// The following don't work well for people with defective color vision
+		
 	};
 
 #define kelly_colors_count (sizeof(kelly_colors) / sizeof(uint32_t)  )
@@ -219,7 +220,7 @@ if ( err ){
 			
 			RGB color = RGB(kelly_colors[j]);
 			printf("%06x \n", kelly_colors[j] );
-			_rightKnob.setColor(color );
+			_leftKnob.setColor(color );
 			usleep(40 * 10000);
 		}
 		
